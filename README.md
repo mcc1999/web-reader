@@ -21,7 +21,3 @@ eslint + prettier + lint-staged + yorkie，commit 代码时自动通过 prettier
 ### CSS
 
 样式文件使用 LESS + CSS Modules
-
-### 接口请求
-
-参考 `src/services` 文件夹
