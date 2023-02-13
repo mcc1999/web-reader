@@ -21,3 +21,14 @@ eslint + prettier + lint-staged + yorkie，commit 代码时自动通过 prettier
 ### CSS
 
 样式文件使用 LESS + CSS Modules
+
+### 产品实现目标 Neat Reader Web产品
+https://www.neat-reader.cn/webapp#/
+
+- 路由
+ - 书架
+ - 书籍阅读器
+  - Header
+  - 目录 Contents
+  - 阅读区域 Reader Area
+  
