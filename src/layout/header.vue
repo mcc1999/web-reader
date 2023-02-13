@@ -1,12 +1,18 @@
 <template>
   <div class="page-header">
-    <el-avatar
-        :size="36"
-         class="header-icon"
-        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-      />
-    <span class="text-large font-600 mr-3"> Web Reader </span>
-    <ThemeSwitch />
+    <div class="header-left-content">
+      <el-avatar
+          :size="36"
+           class="header-icon"
+          src="/reader.png"
+        />
+      <div> Web Reader </div>
+    </div>
+    <div class="header-right-content">
+      <ThemeSwitch />
+      <el-button type="primary">Primary</el-button>
+      <!-- Todo i18n -->
+    </div>
   </div>
 </template>
 
@@ -20,10 +26,22 @@ import ThemeSwitch from '../components/theme-switch.vue'
   height: 50px;
   box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #dcdfe6;
+  // padding: 0 16px;
   
   .header-icon {
     margin: auto 16px;
+  }
+  .header-left-content{
+    display: flex;
+    margin-left: 16px;
+    line-height: 36px;
+  }
+  .header-right-content{
+    display: flex;
+    margin-right: 32px;
   }
 }
 </style>

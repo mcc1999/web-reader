@@ -15,11 +15,18 @@ export default defineConfig({
       '@': pathSrc,
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "./src/styles/element/index.scss" as *;`,
+      },
+    },
+  },
   plugins: [
     vue(),
     AutoImport({
       resolvers: [
-        ElementPlusResolver(),
+        ElementPlusResolver({importStyle: 'sass'}),
         // 自动导入图标组件
         IconsResolver({
           prefix: 'Icon',
