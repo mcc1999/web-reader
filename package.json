@@ -21,6 +21,7 @@
     ]
   },
   "dependencies": {
+    "@vue/runtime-core": "^3.2.47",
     "pinia": "^2.0.30",
     "vue": "^3.2.45"
   },

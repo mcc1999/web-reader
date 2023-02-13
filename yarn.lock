@@ -393,6 +393,14 @@
     "@vue/reactivity" "3.2.47"
     "@vue/shared" "3.2.47"
 
+"@vue/runtime-core@^3.2.47":
+  version "3.2.47"
+  resolved "https://registry.npmmirror.com/@vue/runtime-core/-/runtime-core-3.2.47.tgz#406ebade3d5551c00fc6409bbc1eeb10f32e121d"
+  integrity sha512-RZxbLQIRB/K0ev0K9FXhNbBzT32H9iRtYbaXb0ZIz2usLms/D55dJR2t6cIEUn6vyhS3ALNvNthI+Q95C+NOpA==
+  dependencies:
+    "@vue/reactivity" "3.2.47"
+    "@vue/shared" "3.2.47"
+
 "@vue/runtime-dom@3.2.47":
   version "3.2.47"
   resolved "https://registry.npmmirror.com/@vue/runtime-dom/-/runtime-dom-3.2.47.tgz"
