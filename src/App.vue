@@ -10,7 +10,7 @@
 import en from 'element-plus/dist/locale/en.mjs'
 // @ts-ignore
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-import Header from './layout/header.vue'
+import Header from '@/layout/header.vue'
 
 </script>
 

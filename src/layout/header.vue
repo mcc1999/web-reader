@@ -16,8 +16,8 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import ThemeSwitch from '../components/theme-switch.vue'
+<script setup lang="ts">
+import ThemeSwitch from '@/components/theme-switch.vue'
 </script>
 
 <style scoped lang="scss">
