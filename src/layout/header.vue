@@ -28,7 +28,7 @@ import ThemeSwitch from '../components/theme-switch.vue'
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #dcdfe6;
+  border-bottom: 1px solid var(--el-border-color);
   // padding: 0 16px;
   
   .header-icon {

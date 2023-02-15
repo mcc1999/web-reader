@@ -20,7 +20,7 @@ eslint + prettier + lint-staged + yorkie，commit 代码时自动通过 prettier
 
 ### CSS
 
-样式文件使用 LESS + CSS Modules
+样式使用 SASS
 
 ### 产品实现目标 Neat Reader Web产品
 https://www.neat-reader.cn/webapp#/
@@ -32,3 +32,36 @@ https://www.neat-reader.cn/webapp#/
   - 目录 Contents
   - 阅读区域 Reader Area
   
+### 主题
+项目具有Light/Dark两种模式，通过`SCSS`变量和`HTML`标签的class类名`dark`实现，通过useDark()实现两种模式切换
+- Light变量配置：在`@/src/styles/element/index.scss`文件里替换原Light模式所需变量
+  `@forward "element-plus/theme-chalk/src/common/var.scss" with (/** 你想替换的变量 */)`
+
+- Dark变量配置
+  - 在`@/scr/styles/index.scss`文件里引入Dark模式所有变量
+    `@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;`
+  - 在`@/scr/styles/element/dark.scss`文件里替换原Dark模式所需变量
+  - 在`@/src/styles/element/index.scss`文件引入替换的Dark模式变量
+    - `@use "./dark.scss";`
+  
+- vite在按需导入时自定义主题，使用`scss.additionalData`来编译所有应用 scss 变量的组件, 把自定义文件传入
+  ```Typescript
+  export default defineConfig({
+    ...
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "@/styles/element/index.scss" as *;` 
+        }
+      }
+    },
+    ...
+    Components({
+      ...
+      resolvers: [
+        ElementPlusResolver({importStyle: 'sass'}), // importStyle可以配置element-plus的样式引入方式
+        ...
+      ],
+      ...
+    }),
+  ```

@@ -18,15 +18,15 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "./src/styles/element/index.scss" as *;`,
-      },
-    },
+        additionalData: `@use "@/styles/element/index.scss" as *;` 
+      }
+    }
   },
   plugins: [
     vue(),
     AutoImport({
       resolvers: [
-        ElementPlusResolver({importStyle: 'sass'}),
+        ElementPlusResolver(),
         // 自动导入图标组件
         IconsResolver({
           prefix: 'Icon',
@@ -36,7 +36,7 @@ export default defineConfig({
     }),
     Components({
       resolvers: [
-        ElementPlusResolver(),
+        ElementPlusResolver({importStyle: 'sass'}),
         // 自动注册图标组件
         IconsResolver({
           enabledCollections: ['ep'],

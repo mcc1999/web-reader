@@ -1,11 +1,11 @@
 /* 覆盖你需要的变量 */
 @forward 'element-plus/theme-chalk/src/dark/var.scss' with (
-    $colors: (
-      /** For Example*/
-      'primary': (
-        'base': green,
-      ),
+  $colors: (
+    /** For Example*/
+    'primary': (
+      'base': purple,
     ),
+  ),
   $bg-color: (
     '': #141414,
   )
