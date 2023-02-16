@@ -21,9 +21,10 @@
     ]
   },
   "dependencies": {
-    "@vue/runtime-core": "^3.2.47",
     "@element-plus/icons-vue": "^2.0.10",
+    "@vue/runtime-core": "^3.2.47",
     "element-plus": "^2.2.29",
+    "localforage": "^1.10.0",
     "pinia": "^2.0.30",
     "vue": "^3.2.45",
     "vue-router": "4"

@@ -23,7 +23,7 @@ import ThemeSwitch from '@/components/theme-switch.vue'
 .page-header {
   width: 100%;
   height: 50px;
-  box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
+  box-shadow: 0 2px 3px var(--el-border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
