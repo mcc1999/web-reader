@@ -10,7 +10,6 @@
     </div>
     <div class="header-right-content">
       <ThemeSwitch />
-      <el-button type="primary">Primary</el-button>
       <!-- Todo i18n -->
     </div>
   </div>

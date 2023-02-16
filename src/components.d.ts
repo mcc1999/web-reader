@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     ElAvatar: typeof import('element-plus/es')['ElAvatar'];
     ElButton: typeof import('element-plus/es')['ElButton'];
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider'];
+    ElIcon: typeof import('element-plus/es')['ElIcon'];
     ElSwitch: typeof import('element-plus/es')['ElSwitch'];
     RouterLink: typeof import('vue-router')['RouterLink'];
     RouterView: typeof import('vue-router')['RouterView'];

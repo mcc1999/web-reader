@@ -1,7 +1,10 @@
 // custom light variables
 @forward "element-plus/theme-chalk/src/common/var.scss" with (
   $colors: (
-    'primary': ('base': green)
+    'primary': ('base': green),
+  ),
+  $text-color:(
+    'gray': #999,
   ),
   // $bg-color: (
   //   '': #eee
