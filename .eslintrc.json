@@ -25,6 +25,7 @@
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/no-unresolved": "off",
     "import/extensions": "off",
-    "import/order": "off"
+    "import/order": "off",
+    "semi": "off"
   }
 }

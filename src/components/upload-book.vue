@@ -7,7 +7,7 @@
   >
     <template #trigger>      
       <el-button color="#ff6525" class="upload-button" round>
-        <el-icon class="add-icon" :size="18"><DocumentAdd /></el-icon>
+        <i-ep-document-add :size="18" class="add-icon" />
         添加本地图书
       </el-button>
     </template>
@@ -16,7 +16,6 @@
 
 <script setup lang='ts'>
 import { useBookStore } from '@/store';
-import { DocumentAdd } from '@element-plus/icons-vue'
 import { UploadFile } from 'element-plus';
 
 const bookStore = useBookStore()

@@ -65,3 +65,44 @@ https://www.neat-reader.cn/webapp#/
       ...
     }),
   ```
+
+  ### Icon使用
+  1. 自动导入
+  - `yarn add @iconify-json/ep`
+    `yarn add unplugin-vue-components unplugin-icons unplugin-auto-import`
+  - 配置vite.config.ts
+    ```typescript
+      export default defineConfig({
+        // ...
+        plugins: [
+          AutoImport({
+            // ...
+            resolvers: [
+              // 自动导入图标组件
+              IconsResolver({
+                prefix: 'Icon',
+              }),
+            ],
+            dts: path.resolve(pathSrc, 'auto-imports.d.ts'),
+          }),
+          Components({
+            resolvers: [
+              // 自动注册图标组件
+              IconsResolver({
+                enabledCollections: ['ep'],
+              }),
+            ],
+            dts: path.resolve(pathSrc, 'components.d.ts'),
+          }),
+          Icons({
+            autoInstall: true,
+          }),
+        ],
+      });
+    ```
+  - 使用 `<i-ep-document-add />`
+
+  1. 手动导入
+  - `yarn add @element-plus/icons-vue`
+  - `import { DocumentAdd } from '@element-plus/icons-vue'`
+    `<el-icon><DocumentAdd /></el-icon>`

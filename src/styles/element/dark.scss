@@ -8,5 +8,25 @@
   ),
   $bg-color: (
     '': #141414,
+  ),
+  $box-shadow: (
+    '': (
+      0px 12px 32px 4px rgba(#fff, 0.36),
+      0px 8px 20px rgba(#fff, 0.72),
+    ),
+    'light': (
+      0px 0px 12px rgba(#fff, 0.72),
+    ),
+    'lighter': (
+      0px 0px 6px rgba(#fff, 0.72),
+    ),
+    'dark': (
+      0px 16px 48px 16px rgba(#fff, 0.72),
+      0px 12px 32px #fff,
+      0px 8px 16px -8px #fff,
+    ),
+    'book': (
+      rgba(205, 205, 162, 0.25) 0px 50px 100px -20px, rgba(255, 255, 255, 0.3) 0px 30px 60px -30px, rgba(245, 218, 191, 0.35) 0px -2px 6px 0px inset
+    )
   )
 );

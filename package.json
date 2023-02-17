@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.10",
+    "@iconify-json/ep": "^1.1.9",
     "@vue/runtime-core": "^3.2.47",
     "element-plus": "^2.2.29",
     "localforage": "^1.10.0",

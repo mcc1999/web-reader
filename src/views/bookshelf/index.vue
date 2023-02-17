@@ -1,12 +1,22 @@
 <template>
   <div class="bookshelf">
-    <div class="title">缓存图书</div>
-    <UploadBook />
-  </div>
-  <div class="book-list">
-    <template v-for="book in books">
-      <BookItem :book="book" />
-    </template>
+    <div class="shelf-header">
+      <div class="title">
+        缓存图书
+        <el-tooltip placement="bottom">
+          <template #content>
+            <div style="max-width: 320px;">
+              下列展示的图书，以缓存数据的形式保存在浏览器中。由于浏览器会根据系统存储空间的大小，“自动，不定时”清理缓存数据，因此不建议您保存过多数据。
+            </div>
+          </template>
+          <i-ep-question-filled class="question-icon" />
+        </el-tooltip>
+      </div>
+      <UploadBook />
+    </div>
+    <div class="book-list">
+      <BookItem v-for="book in books" :book="book" :key="book.bookName" />
+    </div>
   </div>
   <!-- <Test /> -->
 </template>
@@ -16,33 +26,44 @@ import UploadBook from '@/components/upload-book.vue';
 import BookItem from '@/components/book-item.vue';
 import Test from '@/components/test.vue';
 import { useBookStore, useTestStore } from '@/store';
-import { onBeforeMount, onMounted, onUpdated, reactive, ref, watch } from 'vue';
+import { onBeforeMount } from 'vue';
 import { storeToRefs } from 'pinia'
 
 const bookStore = useBookStore()
 const { books } = storeToRefs(bookStore)
 
-watch(books, () => {
-  console.log('watch', books.value);
+onBeforeMount(async () => {
+  await bookStore.getLocalBooks()
 })
+
 </script>
 
 <style scoped lang="scss">
 .bookshelf{
-  display: flex;
-  justify-content: space-between;
-  padding: 16px;
   margin: 0 10%;
-  border-bottom: 2px solid var(--el-border-color);
+  
+  .shelf-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 2px solid var(--el-border-color);
 
-  .title{
-    height: 32px;
-    line-height: 32px;
-    color: var(--el-text-color-gray);
+    .title{
+      display: flex;
+      align-items: center;
+      color: var(--el-text-color-gray);
+
+      .question-tooltip{
+        max-width: 320px;
+      }
+    }
   }
-}
-.book-list {
-  display: flex;
-  justify-content: space-between;
+  .book-list {
+    display: grid;
+    gap: 24px 90px;
+    grid-template-columns: repeat(auto-fill, 140px);
+    justify-content: center;
+    padding: 24px;
+  }
 }
 </style>

@@ -1,0 +1,1 @@
+export const BOOKS_INFO_LOCALFORAGE_KEY = 'web-reader-booksInfo'
