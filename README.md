@@ -27,7 +27,7 @@ https://www.neat-reader.cn/webapp#/
 
 - 路由
  - 书架
- - 书籍阅读器
+ - 图书阅读器
   - Header
   - 目录 Contents
   - 阅读区域 Reader Area
