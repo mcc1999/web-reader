@@ -1,5 +1,5 @@
 <template>
-    <el-upload
+  <el-upload
     accept=".epub"
     :auto-upload="false"
     :on-change="handleChange"
@@ -20,11 +20,7 @@ import { ElMessage, UploadFile } from 'element-plus';
 
 const bookStore = useBookStore()
 const handleChange = async (uploadFile: UploadFile) => {
-  await bookStore.addBook(uploadFile.name, uploadFile.raw!).then(() => {
-    ElMessage.success('添加图书成功！')
-  }).catch((err) =>{
-    ElMessage.error('[error-添加图书失败]：', err)
-  })
+  await bookStore.addBook(uploadFile.name, uploadFile.raw!)
 }
 </script>
 

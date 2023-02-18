@@ -9,9 +9,6 @@
 
 <script setup lang='ts'>
 import { Book, useBookStore } from '@/store/book';
-import { onMounted } from 'vue';
-import { CircleCloseFilled } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus';
 
 interface BookItemProps {
   book: Book
@@ -19,8 +16,10 @@ interface BookItemProps {
 const props = defineProps<BookItemProps>()
 const bookStore = useBookStore()
 
+console.log(props.book, 'book');
+
 const handleDeleteBook = async () => {
-  bookStore.deleteBook(props.book.bookName)
+  bookStore.deleteBook(props.book.uuid)
 }
 
 </script>

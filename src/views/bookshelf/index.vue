@@ -12,7 +12,10 @@
           <i-ep-question-filled class="question-icon" />
         </el-tooltip>
       </div>
-      <UploadBook />
+      <div class="upload">
+        <UniqueBookName />
+        <UploadBook />
+      </div>
     </div>
     <div class="book-list">
       <BookItem v-for="book in books" :book="book" :key="book.bookName" />
@@ -23,6 +26,7 @@
 
 <script setup lang="ts" >
 import UploadBook from '@/components/upload-book.vue';
+import UniqueBookName from '@/components/unique-book-name.vue';
 import BookItem from '@/components/book-item.vue';
 import Test from '@/components/test.vue';
 import { useBookStore, useTestStore } from '@/store';
@@ -53,9 +57,10 @@ onBeforeMount(async () => {
       align-items: center;
       color: var(--el-text-color-gray);
 
-      .question-tooltip{
-        max-width: 320px;
-      }
+    }
+
+    .upload {
+      display: flex;
     }
   }
   .book-list {

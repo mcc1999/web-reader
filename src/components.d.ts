@@ -32,6 +32,7 @@ declare module '@vue/runtime-core' {
     Test: typeof import('./components/test.vue')['default']
     Test2: typeof import('./components/test2.vue')['default']
     ThemeSwitch: typeof import('./components/theme-switch.vue')['default']
+    UniqueBookName: typeof import('./components/unique-book-name.vue')['default']
     UploadBook: typeof import('./components/upload-book.vue')['default']
   }
 }
