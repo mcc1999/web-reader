@@ -20,13 +20,7 @@ const props = defineProps<BookItemProps>()
 const bookStore = useBookStore()
 
 const handleDeleteBook = async () => {
-  bookStore.deleteBook(props.book.bookName).then(() => {
-    ElMessage.success('删除图书成功！')
-  }).catch((err)=>{
-    ElMessage.error('删除图书失败！')
-    console.log('[error-删除图书失败]：', err);
-    
-  })
+  bookStore.deleteBook(props.book.bookName)
 }
 
 </script>

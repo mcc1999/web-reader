@@ -1,6 +1,6 @@
 import { BOOKS_INFO_LOCALFORAGE_KEY } from '@/consts';
 import { file2blob } from '@/utils'
-import { ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import localforage from 'localforage'
 import { defineStore } from 'pinia'
 
@@ -62,14 +62,21 @@ export const useBookStore = defineStore('bookStore', {
     async deleteBook(bookName: string){
       const bookIndex = this.books.findIndex(book => book.bookName === bookName)
       if(bookIndex > -1){
-        await ElMessageBox.confirm(
+        const res = await ElMessageBox.confirm(
           '确定删除这本图书吗？',
           '确认'
-        ).then(async () =>{
-          this.books = this.books.filter(book => book.bookName !== bookName)
-          await localforage.setItem(BOOKS_INFO_LOCALFORAGE_KEY, JSON.stringify(this.books))
-          await localforage.removeItem(bookName)
-        }).catch(()=>{})
+        )
+        if(res === 'confirm'){
+          try {              
+            this.books = this.books.filter(book => book.bookName !== bookName)
+            await localforage.setItem(BOOKS_INFO_LOCALFORAGE_KEY, JSON.stringify(this.books))
+            await localforage.removeItem(bookName)
+            ElMessage.success('删除图书成功！')
+          } catch (err) {
+            ElMessage.error('删除图书失败！')
+            console.log('[error-删除图书失败]：', err);           
+          }
+        }
       }
     },
     async getLocalBooks(){
