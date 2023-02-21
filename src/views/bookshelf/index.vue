@@ -35,9 +35,8 @@ import { storeToRefs } from 'pinia'
 
 const bookStore = useBookStore()
 const { books } = storeToRefs(bookStore)
-
 onBeforeMount(async () => {
-  await bookStore.getLocalBooks()
+  await bookStore.getLocalBookList()
 })
 
 </script>

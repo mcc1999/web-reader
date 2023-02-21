@@ -15,3 +15,11 @@ export async function file2blob(file: File): Promise<Blob> {
 export function blob2file(blob: Blob, fileName: string): File {
   return new File([blob], fileName, {type: blob.type})
 }
+
+export async function blob2ArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
+  return await blob.arrayBuffer()
+}
+
+export async function File2ArrayBuffer(file: File) {
+  return await file.arrayBuffer()
+} 

@@ -1,17 +1,18 @@
 import { BOOKS_INFO_LOCALFORAGE_KEY } from '@/consts';
-import { file2blob } from '@/utils'
+import { File2ArrayBuffer } from '@/utils'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import localforage from 'localforage'
 import { defineStore } from 'pinia'
 import { v4 as uuidV4 } from 'uuid';
+import { Book as EpubBook, Rendition } from 'epubjs'
 
 /**
  * IndexedDB本地持久化--localforage
  * - 图书在Pinia中存的state是File类型，
- *   但在本地indexedDB持久化中保存的是Blob类型，因为localforage不支持File类型
+ *   但在本地indexedDB持久化中保存的是ArrayBuffer类型，因为localforage不支持File类型
  * - 存储数据结构
  *   1. key: 'web-reader-booksInfo', value: bookInfo[], bookInfo包含bookName，...其他待扩展
- *   2. key: bookName, value: book的Blob文件，在reader路由下根据bookName从indexedDB获取文件
+ *   2. key: bookName, value: book的ArrayBuffer文件，在reader路由下根据bookName从indexedDB获取文件
  *      注：暂不考虑bookName重名的情况，上传的时候校验bookName, confirm是否覆盖文件TODO
  */
 
@@ -23,12 +24,21 @@ export interface Book {
 }
 interface BookStateType {
   uniqueBookNameFlag: boolean,
-  books: Book[]
+  books: Book[],
+  currentBook: EpubBook,
+  rendition: Rendition
+}
+interface EpubBookElements {
+  book: EpubBook,
+  rendition: Rendition
 }
 export const useBookStore = defineStore('bookStore', {
   state: (): BookStateType => ({
     uniqueBookNameFlag: false,
     books: [],
+    currentBook: undefined as unknown as EpubBook,
+    rendition: undefined as unknown as Rendition
+    
   }),
   persist: {
     key: 'bookStoreKey',
@@ -41,8 +51,8 @@ export const useBookStore = defineStore('bookStore', {
           // 图书Info本地持久化
           await localforage.setItem(BOOKS_INFO_LOCALFORAGE_KEY, JSON.stringify(this.books))
           // 图书文件本地持久化
-          const bookInBlob = await file2blob(book)
-          await localforage.setItem(uid, bookInBlob)
+          const bookInArrayBuffer = await File2ArrayBuffer(book)
+          await localforage.setItem(uid, bookInArrayBuffer)
           ElMessage.success('添加图书成功！')
         } catch (err) {
           ElMessage.error('添加图书失败！')
@@ -111,9 +121,24 @@ export const useBookStore = defineStore('bookStore', {
         }
       }
     },
-    async getLocalBooks(){
+    async getLocalBookList(){
       const stringifiedBookInfo = await localforage.getItem(BOOKS_INFO_LOCALFORAGE_KEY) as string
       this.books = JSON.parse(stringifiedBookInfo)
     },
+    async getLocalBookArrayBuffer(uuid: string): Promise<ArrayBuffer>{
+      // Test Loading Book From IndexedDB
+      // return new Promise((resolve) => {
+      //   setTimeout(async () =>{
+      //     const res =  await localforage.getItem(uuid) as ArrayBuffer
+      //     resolve(res)
+      //   }, 2000)
+      // })
+      return await localforage.getItem(uuid) as ArrayBuffer
+    },
+    setEpubBookElements(elements: EpubBookElements): void {
+      const {book, rendition} = elements
+      this.currentBook = book;
+      this.rendition = rendition;
+    }
   }
 })

@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
@@ -21,6 +22,8 @@ declare module '@vue/runtime-core' {
     'IEpAdd-': typeof import('~icons/ep/add-')['default']
     IEpAddIcon: typeof import('~icons/ep/add-icon')['default']
     IEpAddLocation: typeof import('~icons/ep/add-location')['default']
+    IEpArrowLeftBold: typeof import('~icons/ep/arrow-left-bold')['default']
+    IEpArrowRightBold: typeof import('~icons/ep/arrow-right-bold')['default']
     IEpCircleCloseFilled: typeof import('~icons/ep/circle-close-filled')['default']
     IEpDocumentAdd: typeof import('~icons/ep/document-add')['default']
     'IEpEp:questionFilled': typeof import('~icons/ep/ep-question-filled')['default']
@@ -34,5 +37,8 @@ declare module '@vue/runtime-core' {
     ThemeSwitch: typeof import('./components/theme-switch.vue')['default']
     UniqueBookName: typeof import('./components/unique-book-name.vue')['default']
     UploadBook: typeof import('./components/upload-book.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

@@ -101,6 +101,7 @@ https://www.neat-reader.cn/webapp#/
       });
     ```
   - 使用 `<i-ep-document-add />`
+  - 在[https://icones.js.org/](https://icones.js.org/)找Icon
 
   1. 手动导入
   - `yarn add @element-plus/icons-vue`

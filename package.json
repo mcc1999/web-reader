@@ -26,6 +26,8 @@
     "@types/uuid": "^9.0.0",
     "@vue/runtime-core": "^3.2.47",
     "element-plus": "^2.2.29",
+    "epubjs": "^0.3.93",
+    "jszip": "^3.10.1",
     "localforage": "^1.10.0",
     "pinia": "^2.0.30",
     "pinia-plugin-persistedstate": "^3.0.2",
