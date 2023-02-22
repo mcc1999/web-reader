@@ -37,16 +37,16 @@ https://www.neat-reader.cn/webapp#/
 
 项目具有 Light/Dark 两种模式，通过`SCSS`变量和`HTML`标签的 class 类名`dark`实现，通过 useDark()实现两种模式切换
 
-- Light 变量配置
+- Light 变量配置  
   在`@/src/styles/element/index.scss`文件里替换原 Light 模式所需变量
   `@forward "element-plus/theme-chalk/src/common/var.scss" with (/** 你想替换的变量 */)`
 
 - Dark 变量配置
-  - 在`@/scr/styles/index.scss`文件里引入 Dark 模式所有变量
+  - 在`@/scr/styles/index.scss`文件里引入 Dark 模式所有变量  
     `@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;`
   - 在`@/scr/styles/element/dark.scss`文件里替换原 Dark 模式所需变量
-  - 在`@/src/styles/element/index.scss`文件引入替换的 Dark 模式变量
-    - `@use "./dark.scss";`
+  - 在`@/src/styles/element/index.scss`文件引入替换的 Dark 模式变量  
+    `@use "./dark.scss";`
 - vite 在按需导入时自定义主题，使用`scss.additionalData`来编译所有应用 scss 变量的组件, 把自定义文件传入
 
   ```Typescript
@@ -74,7 +74,7 @@ https://www.neat-reader.cn/webapp#/
 
   1. 自动导入
 
-  - `yarn add @iconify-json/ep`
+  - `yarn add @iconify-json/ep`  
     `yarn add unplugin-vue-components unplugin-icons unplugin-auto-import`
   - 配置 vite.config.ts
     ```typescript
@@ -111,8 +111,8 @@ https://www.neat-reader.cn/webapp#/
 
   1. 手动导入
 
-  - 安装
+  - 安装  
     `yarn add @element-plus/icons-vue`
-  - 使用
-    `import { DocumentAdd } from '@element-plus/icons-vue'`
+  - 使用  
+    `import { DocumentAdd } from '@element-plus/icons-vue'`  
     `<el-icon><DocumentAdd /></el-icon>`
