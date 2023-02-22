@@ -72,7 +72,7 @@ https://www.neat-reader.cn/webapp#/
 
   ### Icon 使用
 
-  1. 自动导入
+  #### 1. 自动导入
 
   - `yarn add @iconify-json/ep`  
     `yarn add unplugin-vue-components unplugin-icons unplugin-auto-import`
@@ -109,7 +109,7 @@ https://www.neat-reader.cn/webapp#/
   - 在[https://icones.js.org/](https://icones.js.org/)找想要的 Icon
   - 使用方法： `<i-ep-document-add />`
 
-  2. 手动导入
+  #### 2. 手动导入
 
   - 安装  
     `yarn add @element-plus/icons-vue`
