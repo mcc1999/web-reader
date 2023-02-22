@@ -35,7 +35,7 @@ https://www.neat-reader.cn/webapp#/
 
 ### 主题
 
-项目有 Light/Dark 两种模式，通过`SCSS`变量和`HTML`标签的 class 类名`dark`实现，通过 useDark()实现两种模式切换
+项目有 Light/Dark 两种模式，通过`SCSS`变量和`HTML`标签的 class 类名`dark`实现，通过 useDark()实现模式切换
 
 - Light 变量配置  
   在`@/src/styles/element/index.scss`文件里替换原 Light 模式所需变量  
