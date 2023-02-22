@@ -109,7 +109,7 @@ https://www.neat-reader.cn/webapp#/
   - 在[https://icones.js.org/](https://icones.js.org/)找想要的 Icon
   - 使用方法： `<i-ep-document-add />`
 
-  1. 手动导入
+  2. 手动导入
 
   - 安装  
     `yarn add @element-plus/icons-vue`
