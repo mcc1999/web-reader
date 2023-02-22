@@ -115,9 +115,14 @@ https://www.neat-reader.cn/webapp#/
     `yarn add @element-plus/icons-vue`
   - 使用
 
-  ```typescript
+  ```vue
+  <script scoped>
   import { DocumentAdd } from '@element-plus/icons-vue';
-  <el-icon>
-    <DocumentAdd />
-  </el-icon>;
+  </script>
+
+  <template>
+    <el-icon>
+      <DocumentAdd />
+    </el-icon>
+  </template>
   ```
