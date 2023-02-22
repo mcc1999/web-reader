@@ -113,6 +113,11 @@ https://www.neat-reader.cn/webapp#/
 
   - 安装  
     `yarn add @element-plus/icons-vue`
-  - 使用  
-    `import { DocumentAdd } from '@element-plus/icons-vue'`  
-    `<el-icon><DocumentAdd /></el-icon>`
+  - 使用
+
+  ```typescript
+  import { DocumentAdd } from '@element-plus/icons-vue';
+  <el-icon>
+    <DocumentAdd />
+  </el-icon>;
+  ```
