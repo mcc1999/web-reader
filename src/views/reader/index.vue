@@ -1,14 +1,15 @@
 <template>
   <ToolBar />
   <div class="reader-box">
-    <!-- Reader -->
-    <div id="book-reader" class="reader-content" v-loading="loading" style="width: 1000px"></div>
+    <div class="book-page">
+      <div id="book-reader" class="reader-content" v-loading="loading" style="width: 1000px"></div>
+    </div>
   </div>
   <el-empty v-if="!loading && !bookArrayBuffer" description="This Book Does Not Exist!" class="reader-empty" />
 </template>
 
 <script lang="ts" setup>
-import ToolBar from '@/components/toolbar.vue'
+import ToolBar from '@/components/toolbar/index.vue'
 import { useBookStore } from '@/store';
 import { useRoute } from 'vue-router';
 import Epub, { Book } from 'epubjs'
@@ -29,6 +30,9 @@ watch(bookArrayBuffer, async () => {
     // @ts-ignore
     const book: Book = new Epub(bookArrayBuffer.value)
     const rendition = book.renderTo("book-reader", {
+      manager: "default",
+      flow: "paginated",
+      spread: 'none',
       width: "100%",
       height: "100%",
       allowScriptedContent: true,
@@ -49,13 +53,18 @@ watch(bookArrayBuffer, async () => {
 .reader-box {
   position: absolute;
   width: 100%;
-  height: calc(100% - 51px);
-  overflow-y: scroll;
+  height: 100vh;
 
-  .reader-content {
+  .book-page {
+    width: 1000px;
     height: 100%;
     margin: 30px auto;
     box-shadow: 0 2px 7px rgb(0 0 0 / 20%);
+    
+    .reader-content {
+      height: 100%;
+      padding: 96px 48px 200px;
+    }
   }
 }
 .reader-empty {

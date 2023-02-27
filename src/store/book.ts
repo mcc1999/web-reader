@@ -39,7 +39,6 @@ export const useBookStore = defineStore('bookStore', {
     books: [],
     currentBook: undefined as unknown as EpubBook,
     rendition: undefined as unknown as Rendition
-    
   }),
   persist: {
     key: 'bookStoreKey',
