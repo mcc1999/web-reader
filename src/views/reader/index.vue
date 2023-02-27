@@ -34,14 +34,6 @@ watch(bookArrayBuffer, async () => {
       allowScriptedContent: true,
     });
     await rendition.display()
-    book.coverUrl().then(function (coverUrl) {
-          console.log("coverUrl", coverUrl, typeof coverUrl);
-          const coverImg = document.createElement("image") as HTMLImageElement;
-          coverImg.alt = "cover"
-          coverImg.src = coverUrl!
-          coverImg.setAttribute('style', 'border: 1px solid #000')
-          document.body.appendChild(coverImg);
-        });
     book.ready.then(() => {
       booStore.setEpubBookElements({
         book,

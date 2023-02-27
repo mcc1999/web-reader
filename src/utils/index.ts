@@ -20,6 +20,6 @@ export async function blob2ArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
   return await blob.arrayBuffer()
 }
 
-export async function File2ArrayBuffer(file: File) {
+export async function file2ArrayBuffer(file: File) {
   return await file.arrayBuffer()
 } 

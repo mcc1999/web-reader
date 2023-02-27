@@ -1,10 +1,10 @@
 import { BOOKS_INFO_LOCALFORAGE_KEY } from '@/consts';
-import { File2ArrayBuffer } from '@/utils'
+import { file2ArrayBuffer } from '@/utils'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import localforage from 'localforage'
 import { defineStore } from 'pinia'
 import { v4 as uuidV4 } from 'uuid';
-import { Book as EpubBook, Rendition } from 'epubjs'
+import Epub, { Book as EpubBook, Rendition } from 'epubjs'
 
 /**
  * IndexedDB本地持久化--localforage
@@ -20,6 +20,7 @@ import { Book as EpubBook, Rendition } from 'epubjs'
 export interface Book {
   uuid: string;
   bookName: string;
+  cover: string;
   // ...待拓展
 }
 interface BookStateType {
@@ -51,7 +52,7 @@ export const useBookStore = defineStore('bookStore', {
           // 图书Info本地持久化
           await localforage.setItem(BOOKS_INFO_LOCALFORAGE_KEY, JSON.stringify(this.books))
           // 图书文件本地持久化
-          const bookInArrayBuffer = await File2ArrayBuffer(book)
+          const bookInArrayBuffer = await file2ArrayBuffer(book)
           await localforage.setItem(uid, bookInArrayBuffer)
           ElMessage.success('添加图书成功！')
         } catch (err) {
@@ -59,17 +60,29 @@ export const useBookStore = defineStore('bookStore', {
           console.log('[error-添加图书失败]：', err)
         }
       }
+      const storeBookToState = async (type: 'push' | 'create', bookObj: Book) => {        
+        // @ts-ignore
+        const epubBook = new Epub(await file2ArrayBuffer(book))
+        const bookCover = await epubBook.coverUrl()
+        const bookInfo = {...bookObj, cover: bookCover}
+        if(type === 'push'){
+          this.books.push(bookInfo)
+        }else{
+          this.books = [bookInfo]
+        }
+      }
+
+      const uuid = uuidV4()
+      
       // 一、未开启uniqueBookName，允许存在同名图书
       if(this.uniqueBookNameFlag){
         // 1. 书架上已有图书
         if(this.books && this.books.length){
-          const uuid = uuidV4()
-          this.books.push({uuid, bookName})
+          await storeBookToState('push', {bookName, uuid} as Book)
           await setBookToLocal(uuid)
         // 2. 书架上未有图书
         }else{
-          const uuid = uuidV4()
-          this.books = [{uuid, bookName}]
+          await storeBookToState('create', {bookName, uuid} as Book)
           await setBookToLocal(uuid)
         }
         return
@@ -90,14 +103,12 @@ export const useBookStore = defineStore('bookStore', {
         }
         // 1-2. 图书不存在
         else{
-          const uuid = uuidV4()
-          this.books.push({uuid, bookName})
+          await storeBookToState('push', {bookName, uuid} as Book)
           await setBookToLocal(uuid)
         }
       // 2. 书架上未有图书
       }else{
-        const uuid = uuidV4()
-        this.books = [{uuid, bookName}]
+        await storeBookToState('create', {bookName, uuid} as Book)
         await setBookToLocal(uuid)
       }
     },
@@ -123,7 +134,22 @@ export const useBookStore = defineStore('bookStore', {
     },
     async getLocalBookList(){
       const stringifiedBookInfo = await localforage.getItem(BOOKS_INFO_LOCALFORAGE_KEY) as string
-      this.books = JSON.parse(stringifiedBookInfo)
+      const books = JSON.parse(stringifiedBookInfo)
+      
+      const getBookCoverPromises: Promise<void>[] = []
+      books.forEach(async (book: Book) => {
+        getBookCoverPromises.push(
+          (async () => {
+            const bookArrayBuffer = await this.getLocalBookArrayBuffer(book.uuid)
+            // @ts-ignore
+            const epubBook = new Epub(bookArrayBuffer)
+            book.cover = await epubBook.coverUrl()
+            console.log('book.cover', book.cover);
+          })()
+        )
+      })   
+      await Promise.all(getBookCoverPromises)   
+      this.books = books
     },
     async getLocalBookArrayBuffer(uuid: string): Promise<ArrayBuffer>{
       // Test Loading Book From IndexedDB
