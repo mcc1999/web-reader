@@ -1,5 +1,5 @@
 <template>
-  <div class="page-header">
+  <div class="page-header" v-if="route.path !== '/reader'">
     <div class="header-left-content" @click="backToBookShelf">
       <el-avatar
           :size="36"
@@ -7,10 +7,6 @@
           src="/reader.png"
         />
       <div> Web Reader </div>
-    </div>
-    <div class="toolbar">
-      <i-ep-arrow-left-bold @click="handlePreviewsPage" />
-      <i-ep-arrow-right-bold @click="handleNextPage" />
     </div>
     <div class="header-right-content">
       <ThemeSwitch />
@@ -21,33 +17,15 @@
 
 <script setup lang="ts">
 import ThemeSwitch from '@/components/theme-switch.vue'
-import { useBookStore } from '@/store';
-import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
-const bookStore = useBookStore()
-const { currentBook, rendition } = storeToRefs(bookStore)
 const router = useRouter()
+const route = useRoute()
 
 const backToBookShelf = () => {
   router.push('bookshelf')
 }
-const handlePreviewsPage = () => {
-  if(currentBook.value){
-    // @ts-ignore
-    currentBook.value.package.metadata.direction === "rtl"
-    ? rendition.value.next()
-    : rendition.value.prev();
-  }
-}
-const handleNextPage = () => {
-  if(currentBook.value){    
-    // @ts-ignore
-    currentBook.value.package.metadata.direction === "rtl"
-    ? rendition.value.prev()
-    : rendition.value.next();
-  }
-}
+
 </script>
 
 <style scoped lang="scss">
