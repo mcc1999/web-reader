@@ -1,7 +1,9 @@
 <template>
   <Transition name="slide">
     <div class="toolbar-unfold" v-if="toolbarFold">
-      <i-ep-fold @click="toggleToolbarFold" />
+      <el-tooltip placement="bottom" content="展开">
+        <i-ep-fold @click="toggleToolbarFold" />
+      </el-tooltip>
     </div>
   </Transition>
 
@@ -11,7 +13,9 @@
       <div class="toolbar-left">
         <!-- 工具栏折叠 -->
         <div class="toolbar-fold">
-          <i-ep-fold @click="toggleToolbarFold" />
+          <el-tooltip placement="bottom" content="收起">
+            <i-ep-fold @click="toggleToolbarFold" />
+          </el-tooltip>
         </div>
         <div class="title">Web Reader</div>
         <el-divider direction="vertical" />
@@ -122,7 +126,6 @@ const backToBookShelf = () => {
 }
 
 .toolbar {
-  width: 100%;
   height: 50px;
   display: flex;
   align-items: center;
@@ -132,6 +135,7 @@ const backToBookShelf = () => {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0; 
   z-index: 100;
 
   .toolbar-left {

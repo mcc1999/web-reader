@@ -34,7 +34,6 @@ watch(bookArrayBuffer, async () => {
       flow: "paginated",
       spread: 'none',
       width: "100%",
-      height: "100%",
       allowScriptedContent: true,
     });
     await rendition.display()
@@ -51,18 +50,18 @@ watch(bookArrayBuffer, async () => {
 
 <style lang="scss" scoped>
 .reader-box {
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 100vh;
+  overflow: auto;
 
   .book-page {
-    width: 1000px;
-    height: 100%;
+    width: 1096px;
     margin: 30px auto;
     box-shadow: 0 2px 7px rgb(0 0 0 / 20%);
     
     .reader-content {
-      height: 100%;
+      min-height: 100vh;
       padding: 96px 48px 200px;
     }
   }

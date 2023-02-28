@@ -6,7 +6,7 @@
            class="header-icon"
           src="/reader.png"
         />
-      <div> Web Reader </div>
+      <div class="page-header-title"> Web Reader </div>
     </div>
     <div class="header-right-content">
       <ThemeSwitch />
@@ -47,6 +47,12 @@ const backToBookShelf = () => {
     margin-left: 16px;
     line-height: 36px;
     cursor: pointer;
+
+    .page-header-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--el-color-primary);
+    }
   }
   .header-right-content{
     display: flex;
