@@ -4,7 +4,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import localforage from 'localforage'
 import { defineStore } from 'pinia'
 import { v4 as uuidV4 } from 'uuid';
-import Epub, { Book as EpubBook, Rendition } from 'epubjs'
+import Epub from 'epubjs'
 
 /**
  * IndexedDB本地持久化--localforage
@@ -21,24 +21,18 @@ export interface Book {
   uuid: string;
   bookName: string;
   cover: string;
+  location: string; // 阅读进度
   // ...待拓展
 }
 interface BookStateType {
   uniqueBookNameFlag: boolean,
   books: Book[],
-  currentBook: EpubBook,
-  rendition: Rendition
 }
-interface EpubBookElements {
-  book: EpubBook,
-  rendition: Rendition
-}
+
 export const useBookStore = defineStore('bookStore', {
   state: (): BookStateType => ({
     uniqueBookNameFlag: false,
     books: [],
-    currentBook: undefined as unknown as EpubBook,
-    rendition: undefined as unknown as Rendition
   }),
   persist: {
     key: 'bookStoreKey',
@@ -143,7 +137,6 @@ export const useBookStore = defineStore('bookStore', {
             // @ts-ignore
             const epubBook = new Epub(bookArrayBuffer)
             book.cover = await epubBook.coverUrl()
-            console.log('book.cover', book.cover);
           })()
         )
       })   
@@ -160,10 +153,18 @@ export const useBookStore = defineStore('bookStore', {
       // })
       return await localforage.getItem(uuid) as ArrayBuffer
     },
-    setEpubBookElements(elements: EpubBookElements): void {
-      const {book, rendition} = elements
-      this.currentBook = book;
-      this.rendition = rendition;
+    async setBookLocation(uuid: string, location: string){
+      const bookIndex = this.books.findIndex(b => b.uuid === uuid)
+      if(bookIndex > -1) {
+        this.books[bookIndex].location = location
+        await localforage.setItem(BOOKS_INFO_LOCALFORAGE_KEY, JSON.stringify(this.books))
+      }
+    },
+    getBookLocation(uuid: string){
+      const bookIndex = this.books.findIndex(b => b.uuid === uuid)
+      if(bookIndex > -1) {        
+        return this.books[bookIndex].location
+      }
     }
   }
 })

@@ -1,40 +1,21 @@
 <template>
   <div class="toolbar-item">
     <div class="toolbar-item-title">章节</div>
-    <el-select size="small" filterable clearable class="select-class" v-model="toc" @change="handleTocChange">
+    <el-select size="small" filterable clearable class="select-class" v-model="toc" @change="handleTocChange" placeholder="请选择/搜索">
       <el-option v-for="option in tocOptions" :key="option.label" :label="option.label" :value="option.value" style="max-width: 320px;"/>
     </el-select>
-    <i-ep-arrow-left-bold @click="handlePreviewsPage" />
-    <i-ep-arrow-right-bold @click="handleNextPage" />
   </div>
 </template>
 
 <script setup lang='ts'>
-import { useBookStore } from '@/store';
+import { useEpubStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
-const bookStore = useBookStore()
+const epubStore = useEpubStore()
 
-const { currentBook: book, rendition } = storeToRefs(bookStore)
+const { currentBook: book, rendition } = storeToRefs(epubStore)
 const tocOptions = ref()
 const toc = ref()
-
-const handlePreviewsPage = () => {
-if(book.value){
-  // @ts-ignore
-  book.value.package.metadata.direction === "rtl"
-  ? rendition.value.next()
-  : rendition.value.prev();
-}
-}
-const handleNextPage = () => {
-  if(book.value){    
-    // @ts-ignore
-    book.value.package.metadata.direction === "rtl"
-    ? rendition.value.prev()
-    : rendition.value.next();
-  }
-}
 
 const handleTocChange = () => {
   rendition.value.display(toc.value)

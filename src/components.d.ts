@@ -7,6 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AdderSubtractor: typeof import('./components/adder-subtractor.vue')['default']
+    AddSub: typeof import('./components/add-sub.vue')['default']
     BookItem: typeof import('./components/book-item.vue')['default']
     ChangePage: typeof import('./components/toolbar/changePage.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']

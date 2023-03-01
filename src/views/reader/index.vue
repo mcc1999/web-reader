@@ -2,7 +2,13 @@
   <ToolBar />
   <div class="reader-box">
     <div class="book-page">
-      <div id="book-reader" class="reader-content" v-loading="loading" style="width: 1000px"></div>
+      <div class="book-reader-container">
+        <div id="book-reader" class="reader-content" v-loading="loading"></div>
+        <div class="next-btn">
+          <p @click="handlePreviewsPage">上一章节</p>
+          <p @click="handleNextPage">下一章节</p>
+        </div>
+      </div>
     </div>
   </div>
   <el-empty v-if="!loading && !bookArrayBuffer" description="This Book Does Not Exist!" class="reader-empty" />
@@ -10,18 +16,22 @@
 
 <script lang="ts" setup>
 import ToolBar from '@/components/toolbar/index.vue'
-import { useBookStore } from '@/store';
+import { useBookStore, useEpubStore } from '@/store';
 import { useRoute } from 'vue-router';
 import Epub, { Book } from 'epubjs'
+import { storeToRefs } from 'pinia';
 
 const {query: {uuid}} = useRoute()
-const booStore = useBookStore()
+const bookStore = useBookStore()
+const epubStore = useEpubStore()
 
 const loading = ref(true)
 const bookArrayBuffer = ref<ArrayBuffer>()
+const {currentBook, rendition} = storeToRefs(epubStore)
 
 onBeforeMount(async() => {
-  bookArrayBuffer.value = await booStore.getLocalBookArrayBuffer(uuid as string)
+  await bookStore.getLocalBookList() // 在reader路由也要拿一下所有booksInfo，不然拿不到location
+  bookArrayBuffer.value = await bookStore.getLocalBookArrayBuffer(uuid as string)
 })
 
 watch(bookArrayBuffer, async () => {
@@ -36,15 +46,38 @@ watch(bookArrayBuffer, async () => {
       width: "100%",
       allowScriptedContent: true,
     });
-    await rendition.display()
+    const oldLocation = bookStore.getBookLocation(uuid as string)
+    await rendition.display(oldLocation)
+
     book.ready.then(() => {
-      booStore.setEpubBookElements({
-        book,
-        rendition
-      })
+      epubStore.setEpubBook(book)
+      epubStore.setRendition(rendition)
     })
   }
 })
+
+onBeforeUnmount(async () => {
+  // @ts-ignore
+  await bookStore.setBookLocation(uuid, epubStore.rendition.currentLocation().end.cfi)
+})
+
+const handlePreviewsPage = () => {
+if(currentBook.value){
+  // @ts-ignore
+  currentBook.value.package.metadata.direction === "rtl"
+  ? rendition.value.next()
+  : rendition.value.prev();
+}
+}
+const handleNextPage = () => {
+  if(currentBook.value){    
+    // @ts-ignore
+    currentBook.value.package.metadata.direction === "rtl"
+    ? rendition.value.prev()
+    : rendition.value.next();
+  }
+}
+
 
 </script>
 
@@ -56,14 +89,38 @@ watch(bookArrayBuffer, async () => {
   overflow: auto;
 
   .book-page {
-    width: 1096px;
+    width: 1000px;
     margin: 30px auto;
     box-shadow: 0 2px 7px rgb(0 0 0 / 20%);
     
-    .reader-content {
-      min-height: 100vh;
+    .book-reader-container {
+      width: 896px;
       padding: 96px 48px 200px;
+      
+      .reader-content {
+        min-height: 100vh;
+      }
+
+      .next-btn {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid var(--el-border-color);
+
+        p {
+          width: 330px;
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: var(--el-color-primary);
+          background-color: hsla(0,0%,95%,.8);
+          border-radius: 4px;
+          cursor: pointer;
+          user-select: none;
+        }
+      }
     }
+
   }
 }
 .reader-empty {

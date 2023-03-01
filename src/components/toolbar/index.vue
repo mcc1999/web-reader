@@ -27,6 +27,7 @@
       </div>
 
       <div class="toolbar-right">
+        <el-divider direction="vertical" />
         <!-- 目录及翻页 -->
         <Toc />
         <el-divider direction="vertical" />
@@ -39,9 +40,10 @@
         <!-- 改变阅读器字号 -->
         <div class="toolbar-item">
           <div class="toolbar-item-title">字号</div>
-          <el-select v-model="bookStyle.fontSize" size="small" @change="updateBookStyle" class="select-class">
+          <AddSub v-model="bookStyle.fontSize" :width='80' :options="fontSizes" unit="px" @update:modelValue="updateBookStyle"/>
+          <!-- <el-select v-model="bookStyle.fontSize" size="small" @change="updateBookStyle" class="select-class">
             <el-option v-for="fontSize in fontSizes" :key="fontSize" :label="fontSize + 'px'" :value="fontSize" />
-          </el-select>
+          </el-select> -->
         </div>
         <el-divider direction="vertical" />
         <!-- 改变阅读器字体 -->
@@ -61,7 +63,7 @@
         <!-- 改变阅读器行间距 -->
         <div class="toolbar-item">
           <div class="toolbar-item-title">行间距</div>
-          <el-slider v-model="bookStyle.lineHeight" :min="0.5" :max="2" :step="0.5" size="small" @change="updateBookStyle" class="slider-class" />
+          <AddSub v-model="bookStyle.lineHeight" :width='80' :options="lineHeights" unit="x" @update-value="updateBookStyle"/>
         </div>
         <el-divider direction="vertical" />
         <ThemeSwitch />
@@ -72,14 +74,15 @@
 
 <script lang="ts" setup>
 import Toc from '@/components/toolbar/toc.vue'
+import AddSub from '@/components/add-sub.vue'
 import ThemeSwitch from '@/components/theme-switch.vue'
-import { useBookStore } from '@/store';
+import { useEpubStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
-const bookStore = useBookStore()
-const {rendition} = storeToRefs(bookStore)
+const epubStore = useEpubStore()
+const {rendition} = storeToRefs(epubStore)
 const toolbarFold = ref(false)
 const bookStyle = ref<any>({
   backgroundColor: '#ffffff',
@@ -97,6 +100,7 @@ const predefineColors = [
   '#6d6d6f',
   '#3b403c',
 ]
+const lineHeights = [1, 1.2, 1.5, 1.75, 2, 2.5]
 const toggleToolbarFold = () => {
   toolbarFold.value = !toolbarFold.value
 }
