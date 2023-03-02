@@ -2,7 +2,7 @@
   <ToolBar />
   <div class="reader-box" ref="scrollRef">
     <div class="book-page">
-      <div class="book-reader-container">
+      <div class="book-reader-container" id="book-reader-container">
         <div id="book-reader" class="reader-content" v-loading="loading"></div>
         <div class="next-btn">
           <p @click="handlePreviewsPage">上一章节</p>
@@ -115,10 +115,10 @@ onBeforeUnmount(async () => {
   .book-page {
     width: 1000px;
     margin: 30px auto;
-    box-shadow: 0 2px 7px rgb(0 0 0 / 20%);
+    box-shadow: var(--el-box-shadow-book);
     
     .book-reader-container {
-      width: 896px;
+      width: 904px;
       padding: 96px 48px 200px;
       
       .reader-content {
@@ -128,7 +128,7 @@ onBeforeUnmount(async () => {
       .next-btn {
         display: flex;
         justify-content: space-between;
-        border-top: 1px solid var(--el-border-color);
+        border-top: 1px solid var(--el-color-primary);
 
         p {
           width: 330px;

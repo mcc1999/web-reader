@@ -92,7 +92,6 @@ const toggleToolbarFold = () => {
 }
 const updateBookStyle = () => {  
   if (rendition.value) {
-    console.log('updateBookStyle');
     rendition.value.themes.override('background-color', readerConfig.value.backgroundColor);
     rendition.value.themes.override('font-size', `${readerConfig.value.fontSize}px`);
     rendition.value.themes.override('font-family', readerConfig.value.fontFamily);
@@ -108,7 +107,12 @@ const backToBookShelf = () => {
 watch(rendition, () => {
   if(rendition.value) {
     updateBookStyle()
+    document.getElementById('book-reader-container')?.setAttribute('style', `background-color:${readerConfig.value.backgroundColor}`)
   }
+})
+
+watch(() => readerConfig.value.backgroundColor, () => {
+  document.getElementById('book-reader-container')?.setAttribute('style', `background-color:${readerConfig.value.backgroundColor}`)
 })
 </script>
 
