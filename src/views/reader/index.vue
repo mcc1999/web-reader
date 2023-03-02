@@ -60,30 +60,40 @@ watch(bookArrayBuffer, async () => {
 
 const handlePreviewsPage = () => {
   if(currentBook.value){
-    // @ts-ignore
-    currentBook.value.package.metadata.direction === "rtl"
-    ? rendition.value.next()
-    : rendition.value.prev();
+    rendition.value.prev().then(() => {
+      // 页面回到最上面
+      if(scrollRef.value){
+        scrollRef.value.scrollTop = 0
+      }
+    
+      // 获取当前页面location，更新toc组件
+      // @ts-ignore
+      const curToc = epubStore.rendition.currentLocation().start.href
+      bookStore.setBookLocation(uuid as string, curToc)
+    });
   }
-  // 页面回到最上面
-  scrollRef.value!.scrollTop = 0
 }
 const handleNextPage = () => {
   if(currentBook.value){    
-    // @ts-ignore
-    currentBook.value.package.metadata.direction === "rtl"
-    ? rendition.value.prev()
-    : rendition.value.next();
+    rendition.value.next().then(() => {
+      // 页面回到最上面
+      if(scrollRef.value){
+        scrollRef.value.scrollTop = 0
+      }
 
-    // 页面回到最上面
-    scrollRef.value!.scrollTop = 0
+      // 获取当前页面location，更新toc组件
+      // @ts-ignore
+      const curToc = epubStore.rendition.currentLocation().start.href
+      bookStore.setBookLocation(uuid as string, curToc)
+    });
+
+
+
   }
 }
 
 // 按键翻页
-const keyListener = function(e: KeyboardEvent){
-  console.log('keykeykey');
-  
+const keyListener = function(e: KeyboardEvent){  
   // Left Key
   if ((e.keyCode || e.which) == 37) {
     handlePreviewsPage()
@@ -98,9 +108,9 @@ onMounted(() => {
   document.addEventListener("keyup", keyListener, false);
 })
 
-onBeforeUnmount(async () => {
+onBeforeUnmount(async () => {  
   // @ts-ignore
-  await bookStore.setBookLocation(uuid, epubStore.rendition.currentLocation().end.cfi)
+  await bookStore.setBookLocation(uuid, epubStore.rendition.currentLocation().start.href)
 })
 
 </script>

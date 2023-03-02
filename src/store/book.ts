@@ -153,7 +153,7 @@ export const useBookStore = defineStore('bookStore', {
       // })
       return await localforage.getItem(uuid) as ArrayBuffer
     },
-    async setBookLocation(uuid: string, location: string){
+    async setBookLocation(uuid: string, location: string){      
       const bookIndex = this.books.findIndex(b => b.uuid === uuid)
       if(bookIndex > -1) {
         this.books[bookIndex].location = location

@@ -8,22 +8,27 @@
 </template>
 
 <script setup lang='ts'>
-import { useEpubStore } from '@/store';
+import { useEpubStore, useBookStore } from '@/store';
 import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
 
+const {query: {uuid}} = useRoute()
 const epubStore = useEpubStore()
-
+const bookStore = useBookStore()
 const { currentBook: book, rendition } = storeToRefs(epubStore)
 const tocOptions = ref()
-const toc = ref()
+// 当前章节和bookstore里数据双向绑定
+const { books: booksInfo } = storeToRefs(bookStore)
+const toc = ref(booksInfo.value.find(b => b.uuid === uuid)?.location)
 
 const handleTocChange = () => {
   rendition.value.display(toc.value)
+  bookStore.setBookLocation(uuid as string, toc.value!)
 }
 
-watch(book, async () => {
+watch(book, async () => {  
   if(book){
-    const navigation = await book.value.loaded.navigation
+    const navigation = await book.value.loaded.navigation        
     tocOptions.value = navigation.toc.map(navItem => {
       return {
         label: navItem.label.trim(),
@@ -32,6 +37,10 @@ watch(book, async () => {
     })
   }
 })
+
+watch(booksInfo, () => {
+  toc.value = bookStore.getBookLocation(uuid as string)
+}, {deep: true})
 
 </script>
 

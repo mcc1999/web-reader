@@ -27,7 +27,7 @@
       </div>
 
       <div class="toolbar-right">
-        <el-divider direction="vertical" />
+        <!-- <el-divider direction="vertical" /> -->
         <!-- 目录及翻页 -->
         <Toc />
         <el-divider direction="vertical" />
