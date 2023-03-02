@@ -1,6 +1,6 @@
 <template>
   <ToolBar />
-  <div class="reader-box">
+  <div class="reader-box" ref="scrollRef">
     <div class="book-page">
       <div class="book-reader-container">
         <div id="book-reader" class="reader-content" v-loading="loading"></div>
@@ -26,6 +26,8 @@ const bookStore = useBookStore()
 const epubStore = useEpubStore()
 
 const loading = ref(true)
+// 最外层的box，用于页面上下滚动
+const scrollRef = ref<HTMLDivElement>()
 const bookArrayBuffer = ref<ArrayBuffer>()
 const {currentBook, rendition} = storeToRefs(epubStore)
 
@@ -56,18 +58,15 @@ watch(bookArrayBuffer, async () => {
   }
 })
 
-onBeforeUnmount(async () => {
-  // @ts-ignore
-  await bookStore.setBookLocation(uuid, epubStore.rendition.currentLocation().end.cfi)
-})
-
 const handlePreviewsPage = () => {
-if(currentBook.value){
-  // @ts-ignore
-  currentBook.value.package.metadata.direction === "rtl"
-  ? rendition.value.next()
-  : rendition.value.prev();
-}
+  if(currentBook.value){
+    // @ts-ignore
+    currentBook.value.package.metadata.direction === "rtl"
+    ? rendition.value.next()
+    : rendition.value.prev();
+  }
+  // 页面回到最上面
+  scrollRef.value!.scrollTop = 0
 }
 const handleNextPage = () => {
   if(currentBook.value){    
@@ -75,9 +74,34 @@ const handleNextPage = () => {
     currentBook.value.package.metadata.direction === "rtl"
     ? rendition.value.prev()
     : rendition.value.next();
+
+    // 页面回到最上面
+    scrollRef.value!.scrollTop = 0
   }
 }
 
+// 按键翻页
+const keyListener = function(e: KeyboardEvent){
+  console.log('keykeykey');
+  
+  // Left Key
+  if ((e.keyCode || e.which) == 37) {
+    handlePreviewsPage()
+  }
+  // Right Key
+  if ((e.keyCode || e.which) == 39) {
+    handleNextPage()
+  }
+};
+onMounted(() => {
+  rendition.value?.on("keyup", keyListener);
+  document.addEventListener("keyup", keyListener, false);
+})
+
+onBeforeUnmount(async () => {
+  // @ts-ignore
+  await bookStore.setBookLocation(uuid, epubStore.rendition.currentLocation().end.cfi)
+})
 
 </script>
 

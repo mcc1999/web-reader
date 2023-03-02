@@ -56,9 +56,7 @@ const {modelValue, min, max, step, disabled, width, options, unit} = defineProps
 const emits = defineEmits(['update:modelValue']);
 const disabledFlag = ref({add: false, sub : false})
 
-const judgeDisable = (val: number) => {
-  console.log('options',options);
-  
+const judgeDisable = (val: number) => {  
   if(options){
     if(typeof options[0] === 'number'){
       disabledFlag.value.add = val === options[options.length - 1]
