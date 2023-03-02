@@ -1,6 +1,9 @@
-## Vue3 + Vite Project Init
+## Web Reader
 
-Vue3 + Vite + Typescript + Less + Pinia
+- 模仿 Neat Reader Web 阅读器实现的 epub 阅读器，将来可能支持 txt 等更多格式
+- 技术栈：Vue3 + Vite + Typescript + Less + Pinia
+- epubjs
+-
 
 ## 开发环境
 
@@ -127,20 +130,24 @@ https://www.neat-reader.cn/webapp#/
   </template>
   ```
 
-### Pinia store中变量持久化
+### Pinia store 中变量持久化
+
 可以使用`pinia-plugin-persistedstate`插件来实现持久化
 
-使用方法： 
+使用方法：
+
 - `yarn : yarn add pinia-plugin-persistedstate`
 - 在`main.ts`中注册该插件
-  ```typescript
-  import { createPinia } from 'pinia'
-  import piniaPluginPersistedstate from'pinia-plugin-persistedstate'
 
-  const pinia = createPinia()
-  pinia.use(piniaPluginPersistedstate)
+  ```typescript
+  import { createPinia } from 'pinia';
+  import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+
+  const pinia = createPinia();
+  pinia.use(piniaPluginPersistedstate);
   ```
-- 在Pinia store里配置`persist`参数
+
+- 在 Pinia store 里配置`persist`参数
   ```typescript
   export const useStore = defineStore('Store', {
     state: () => ({
@@ -152,6 +159,6 @@ https://www.neat-reader.cn/webapp#/
       key: 'Store', // key in localStorage
       paths: ['state2'], // only persist the state1 in localStorage
     },
-  })
+  });
   ```
 - `piniaPluginPersistedstate`更详细用法见[官方文档](https://prazdevs.github.io/pinia-plugin-persistedstate/guide/)
