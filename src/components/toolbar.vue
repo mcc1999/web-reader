@@ -27,19 +27,22 @@
         </div>
         <el-divider direction="vertical" />
         <!-- 阅读器全屏 -->
-        <div class="fullscreen" @click="handleFullscreen"  >
+        <div class="icon-item" @click="handleFullscreen"  >
           <el-tooltip placement="bottom" content="全屏">
             <i-ant-design-fullscreen-exit-outlined v-if="isFullscreen" />
             <i-ant-design-fullscreen-outlined v-else/>
           </el-tooltip>
         </div>
+        <el-divider direction="vertical" />
+        <div class="icon-item" @click="emit('toggle-toc-visible')">
+          <el-tooltip placement="bottom" content="目录">
+            <i-ant-design-menu-outlined />
+          </el-tooltip>
+        </div> 
       </div>
 
       <div class="toolbar-right">
         <!-- <el-divider direction="vertical" /> -->
-        <!-- 目录及翻页 -->
-        <Toc />
-        <el-divider direction="vertical" />
         <!-- 改变阅读器背景色 -->
         <div class="toolbar-item">
           <div class="toolbar-item-title">背景色</div>
@@ -82,7 +85,7 @@
 </template>
 
 <script lang="ts" setup>
-import Toc from '@/components/toolbar/toc.vue'
+import Toc from '@/components/toc.vue'
 import AddSub from '@/components/add-sub.vue'
 import ThemeSwitch from '@/components/theme-switch.vue'
 import { useEpubStore } from '@/store';
@@ -97,6 +100,8 @@ const { parentRef } = defineProps({
     // required: true,
   }
 })
+const emit = defineEmits(['toggle-toc-visible'])
+
 const router = useRouter()
 const epubStore = useEpubStore()
 const {rendition} = storeToRefs(epubStore)
@@ -120,6 +125,7 @@ const backToBookShelf = () => {
   router.push('/bookshelf')
 }
 
+// 全屏处理事件
 const handleFullscreen = async () => {
 	if (screenfull.isEnabled) {
 		await screenfull.toggle(parentRef);
@@ -185,15 +191,15 @@ watch(() => readerConfig.value.backgroundColor, () => {
       font-weight: 700;
       color: var(--el-color-primary);
     }
-    .back-to-bookshelf {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-    .fullscreen {
+    .icon-item {
       display: flex;
       align-items: center;
       font-size: 16px;
+      cursor: pointer;
+    }
+    .back-to-bookshelf {
+      display: flex;
+      align-items: center;
       cursor: pointer;
     }
   }

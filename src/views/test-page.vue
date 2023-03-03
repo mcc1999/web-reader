@@ -1,13 +1,9 @@
 <template>
-  <div></div>
-      <div><AddSub v-model="lineHeight" :width='100' @update-value="update" unit="倍"/></div>
+  <Test />
 </template>
 
 <script setup lang='ts'>
-const lineHeight = ref<number>(9)
-const update = (value: number) => {
-  lineHeight.value = value
-}
+import Test from '@/components/test.vue'
 </script>
 
 <style scoped lang='scss'>

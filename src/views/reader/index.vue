@@ -1,23 +1,26 @@
 <template>
   <div class="full-screen-container" ref="fullScreenRef">
-    <ToolBar :parentRef="fullScreenRef" />
-    <div class="reader-box" ref="scrollRef">
-      <div class="book-page">
-        <div class="book-reader-container" id="book-reader-container">
-          <div id="book-reader" class="reader-content" v-loading="loading"></div>
-          <div class="next-btn">
-            <p @click="handlePreviewsPage">上一章节</p>
-            <p @click="handleNextPage">下一章节</p>
+    <ToolBar :parentRef="fullScreenRef" @toggle-toc-visible="toggleTocVisible"/>
+    <div class="reader-full-page">
+      <Toc :visible="tocVisible" />
+      <div class="reader-box" ref="scrollRef">
+        <div class="book-page">
+          <div class="book-reader-container" id="book-reader-container">
+            <div id="book-reader" class="reader-content" v-loading="loading"></div>
+            <div class="next-btn">
+              <p @click="handlePreviewsPage">上一章节</p>
+              <p @click="handleNextPage">下一章节</p>
+            </div>
           </div>
         </div>
       </div>
+      <el-empty v-if="!loading && !bookArrayBuffer" description="This Book Does Not Exist!" class="reader-empty" />
     </div>
-    <el-empty v-if="!loading && !bookArrayBuffer" description="This Book Does Not Exist!" class="reader-empty" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import ToolBar from '@/components/toolbar/index.vue'
+import ToolBar from '@/components/toolbar.vue'
 import { useBookStore, useEpubStore } from '@/store';
 import { useRoute } from 'vue-router';
 import Epub, { Book } from 'epubjs'
@@ -32,6 +35,8 @@ const loading = ref(true)
 const scrollRef = ref<HTMLDivElement>()
 // 用于阅读器全屏
 const fullScreenRef = ref<HTMLDivElement>()
+// 目录显示/隐藏
+const tocVisible = ref<boolean>(false)
 const bookArrayBuffer = ref<ArrayBuffer>()
 const {currentBook, rendition} = storeToRefs(epubStore)
 
@@ -62,6 +67,12 @@ watch(bookArrayBuffer, async () => {
   }
 })
 
+
+// 目录处理事件
+const toggleTocVisible = () => {
+  tocVisible.value = !tocVisible.value
+}
+
 const handlePreviewsPage = () => {
   if(currentBook.value){
     rendition.value.prev().then(() => {
@@ -72,7 +83,7 @@ const handlePreviewsPage = () => {
     
       // 获取当前页面location，更新toc组件
       // @ts-ignore
-      const curToc = epubStore.rendition.currentLocation().start.href
+      const curToc = epubStore.rendition.currentLocation().start.href      
       bookStore.setBookLocation(uuid as string, curToc)
     });
   }
@@ -90,12 +101,8 @@ const handleNextPage = () => {
       const curToc = epubStore.rendition.currentLocation().start.href
       bookStore.setBookLocation(uuid as string, curToc)
     });
-
-
-
   }
 }
-
 // 按键翻页
 const keyListener = function(e: KeyboardEvent){  
   // Left Key
@@ -107,6 +114,7 @@ const keyListener = function(e: KeyboardEvent){
     handleNextPage()
   }
 };
+
 onMounted(() => {
   rendition.value?.on("keyup", keyListener);
   document.addEventListener("keyup", keyListener, false);
@@ -120,51 +128,56 @@ onBeforeUnmount(async () => {
 </script>
 
 <style lang="scss" scoped>
-.reader-box {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: auto;
+.reader-full-page {
+  display: flex;
+  justify-content: space-between;
+  .reader-box {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
 
-  .book-page {
-    width: 1000px;
-    margin: 30px auto;
-    box-shadow: var(--el-box-shadow-book);
-    
-    .book-reader-container {
-      padding: 96px 48px 200px;
-      box-sizing: border-box;
+  
+    .book-page {
+      width: 1000px;
+      margin: 30px auto;
+      box-shadow: var(--el-box-shadow-book);
       
-      .reader-content {
-        min-height: 100vh;
-      }
-
-      .next-btn {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 24px;
-        border-top: 1px solid var(--el-color-primary);
-
-        p {
-          width: 330px;
-          height: 60px;
+      .book-reader-container {
+        padding: 96px 48px 200px;
+        box-sizing: border-box;
+        
+        .reader-content {
+          min-height: 100vh;
+        }
+  
+        .next-btn {
           display: flex;
-          justify-content: center;
-          align-items: center;
-          color: var(--el-color-primary);
-          background-color: hsla(0,0%,95%,.8);
-          border-radius: 4px;
-          cursor: pointer;
-          user-select: none;
+          justify-content: space-between;
+          margin-top: 24px;
+          border-top: 1px solid var(--el-color-primary);
+  
+          p {
+            width: 330px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--el-color-primary);
+            background-color: hsla(0,0%,95%,.8);
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+          }
         }
       }
+  
     }
-
   }
-}
-.reader-empty {
-  position: absolute;
-  width: 100%;
-  height: calc(100% - 51px);
+  .reader-empty {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 51px);
+  }
 }
 </style>

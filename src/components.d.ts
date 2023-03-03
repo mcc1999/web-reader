@@ -27,10 +27,12 @@ declare module '@vue/runtime-core' {
     ElSlider: typeof import('element-plus/es')['ElSlider'];
     ElSwitch: typeof import('element-plus/es')['ElSwitch'];
     ElTooltip: typeof import('element-plus/es')['ElTooltip'];
+    ElTree: typeof import('element-plus/es')['ElTree'];
     ElUpload: typeof import('element-plus/es')['ElUpload'];
     Fold: typeof import('./components/toolbar/fold.vue')['default'];
     IAntDesignFullscreenExitOutlined: typeof import('~icons/ant-design/fullscreen-exit-outlined')['default'];
     IAntDesignFullscreenOutlined: typeof import('~icons/ant-design/fullscreen-outlined')['default'];
+    IAntDesignMenuOutlined: typeof import('~icons/ant-design/menu-outlined')['default'];
     IconEpFold: typeof import('~icons/ep/fold')['default'];
     IconEpQuestionFilled: typeof import('~icons/ep/question-filled')['default'];
     'IEpAdd-': typeof import('~icons/ep/add-')['default'];
@@ -52,8 +54,8 @@ declare module '@vue/runtime-core' {
     Test: typeof import('./components/test.vue')['default'];
     Test2: typeof import('./components/test2.vue')['default'];
     ThemeSwitch: typeof import('./components/theme-switch.vue')['default'];
-    Toc: typeof import('./components/toolbar/toc.vue')['default'];
-    Toolbar: typeof import('./components/toolbar/index.vue')['default'];
+    Toc: typeof import('./components/toc.vue')['default'];
+    Toolbar: typeof import('./components/toolbar.vue')['default'];
     Toolbar2: typeof import('./components/toolbar/toolbar2.vue')['default'];
     UniqueBookName: typeof import('./components/unique-book-name.vue')['default'];
     UploadBook: typeof import('./components/upload-book.vue')['default'];
