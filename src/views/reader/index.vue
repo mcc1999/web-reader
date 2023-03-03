@@ -43,7 +43,7 @@ watch(bookArrayBuffer, async () => {
     const book: Book = new Epub(bookArrayBuffer.value)
     const rendition = book.renderTo("book-reader", {
       manager: "default",
-      flow: "paginated",
+      flow: "scrolled-doc",
       spread: 'none',
       width: "100%",
       allowScriptedContent: true,
@@ -128,8 +128,8 @@ onBeforeUnmount(async () => {
     box-shadow: var(--el-box-shadow-book);
     
     .book-reader-container {
-      width: 904px;
       padding: 96px 48px 200px;
+      box-sizing: border-box;
       
       .reader-content {
         min-height: 100vh;
@@ -138,6 +138,7 @@ onBeforeUnmount(async () => {
       .next-btn {
         display: flex;
         justify-content: space-between;
+        margin-top: 24px;
         border-top: 1px solid var(--el-color-primary);
 
         p {
