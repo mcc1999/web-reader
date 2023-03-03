@@ -27,10 +27,10 @@
         </div>
         <el-divider direction="vertical" />
         <!-- 阅读器全屏 -->
-        <div class="fullscreen" >
+        <div class="fullscreen" @click="handleFullscreen"  >
           <el-tooltip placement="bottom" content="全屏">
-            <i-ant-design-fullscreen-exit-outlined v-if="isFullscreen" @click="handleFullscreen" />
-            <i-ant-design-fullscreen-outlined v-else @click="handleFullscreen" />
+            <i-ant-design-fullscreen-exit-outlined v-if="isFullscreen" />
+            <i-ant-design-fullscreen-outlined v-else/>
           </el-tooltip>
         </div>
       </div>
