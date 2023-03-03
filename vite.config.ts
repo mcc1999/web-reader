@@ -28,7 +28,7 @@ export default defineConfig({
   },
   plugins: [
     vue(
-      { reactivityTransform: true } // 开启props解构响应性语法糖
+      { reactivityTransform: true }, // 开启props解构响应性语法糖
     ),
     AutoImport({
       // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
@@ -47,7 +47,7 @@ export default defineConfig({
         ElementPlusResolver({ importStyle: 'sass' }),
         // 自动注册图标组件
         IconsResolver({
-          enabledCollections: ['ep'],
+          enabledCollections: ['ep', 'ant-design'],
         }),
       ],
       dts: path.resolve(pathSrc, 'components.d.ts'),

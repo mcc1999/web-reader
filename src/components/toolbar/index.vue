@@ -19,9 +19,18 @@
         </div>
         <div class="title">Web Reader</div>
         <el-divider direction="vertical" />
+        <!-- 返回书架 -->
         <div class="back-to-bookshelf" @click="backToBookShelf">
           <el-tooltip placement="bottom" content="返回书架">
             <i-ep-grid />
+          </el-tooltip>
+        </div>
+        <el-divider direction="vertical" />
+        <!-- 阅读器全屏 -->
+        <div class="fullscreen" >
+          <el-tooltip placement="bottom" content="全屏">
+            <i-ant-design-fullscreen-exit-outlined v-if="isFullscreen" @click="handleFullscreen" />
+            <i-ant-design-fullscreen-outlined v-else @click="handleFullscreen" />
           </el-tooltip>
         </div>
       </div>
@@ -80,11 +89,19 @@ import { useEpubStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { fontSizes, fontFamilies, predefineColors, lineHeights } from '@/consts/reader-config';
+import screenfull from 'screenfull';
 
+const { parentRef } = defineProps({
+  parentRef: {
+    type: HTMLElement,
+    // required: true,
+  }
+})
 const router = useRouter()
 const epubStore = useEpubStore()
 const {rendition} = storeToRefs(epubStore)
 const toolbarFold = ref(false)
+const isFullscreen = ref(false)
 const { readerConfig } = storeToRefs(epubStore)
 
 const toggleToolbarFold = () => {
@@ -101,6 +118,15 @@ const updateBookStyle = () => {
 }
 const backToBookShelf = () => {
   router.push('/bookshelf')
+}
+
+const handleFullscreen = async () => {
+	if (screenfull.isEnabled) {
+		await screenfull.toggle(parentRef);
+    console.log(screenfull.isFullscreen);
+    
+    isFullscreen.value = screenfull.isFullscreen
+	}
 }
 
 // 页面初始化时，从localStorage获取持久化的readerConfig，并执行一次updateBookStyle
@@ -162,6 +188,12 @@ watch(() => readerConfig.value.backgroundColor, () => {
     .back-to-bookshelf {
       display: flex;
       align-items: center;
+      cursor: pointer;
+    }
+    .fullscreen {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
       cursor: pointer;
     }
   }

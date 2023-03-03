@@ -1,17 +1,19 @@
 <template>
-  <ToolBar />
-  <div class="reader-box" ref="scrollRef">
-    <div class="book-page">
-      <div class="book-reader-container" id="book-reader-container">
-        <div id="book-reader" class="reader-content" v-loading="loading"></div>
-        <div class="next-btn">
-          <p @click="handlePreviewsPage">上一章节</p>
-          <p @click="handleNextPage">下一章节</p>
+  <div class="full-screen-container" ref="fullScreenRef">
+    <ToolBar :parentRef="fullScreenRef" />
+    <div class="reader-box" ref="scrollRef">
+      <div class="book-page">
+        <div class="book-reader-container" id="book-reader-container">
+          <div id="book-reader" class="reader-content" v-loading="loading"></div>
+          <div class="next-btn">
+            <p @click="handlePreviewsPage">上一章节</p>
+            <p @click="handleNextPage">下一章节</p>
+          </div>
         </div>
       </div>
     </div>
+    <el-empty v-if="!loading && !bookArrayBuffer" description="This Book Does Not Exist!" class="reader-empty" />
   </div>
-  <el-empty v-if="!loading && !bookArrayBuffer" description="This Book Does Not Exist!" class="reader-empty" />
 </template>
 
 <script lang="ts" setup>
@@ -28,6 +30,8 @@ const epubStore = useEpubStore()
 const loading = ref(true)
 // 最外层的box，用于页面上下滚动
 const scrollRef = ref<HTMLDivElement>()
+// 用于阅读器全屏
+const fullScreenRef = ref<HTMLDivElement>()
 const bookArrayBuffer = ref<ArrayBuffer>()
 const {currentBook, rendition} = storeToRefs(epubStore)
 

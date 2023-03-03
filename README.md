@@ -112,6 +112,10 @@ https://www.neat-reader.cn/webapp#/
     ```
   - 在[https://icones.js.org/](https://icones.js.org/)找想要的 Icon
   - 使用方法： `<i-ep-document-add />`
+  - 其他 Icon 集，以 ant-design 为例：
+    `yarn add @iconify-json/ant-design`
+    在`vite.config.ts`文件里加上安装的图标集
+    `IconsResolver({ enabledCollections: ['ep, ant-design']})`
 
   #### 2. 手动导入
 
