@@ -123,11 +123,11 @@ const backToBookShelf = () => {
 const handleFullscreen = async () => {
 	if (screenfull.isEnabled) {
 		await screenfull.toggle(parentRef);
-    console.log(screenfull.isFullscreen);
-    
-    isFullscreen.value = screenfull.isFullscreen
 	}
 }
+screenfull.on('change', () => {  
+  isFullscreen.value = screenfull.isFullscreen
+})
 
 // 页面初始化时，从localStorage获取持久化的readerConfig，并执行一次updateBookStyle
 watch(rendition, () => {
