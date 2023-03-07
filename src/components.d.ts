@@ -11,7 +11,9 @@ declare module '@vue/runtime-core' {
     AddSub: typeof import('./components/add-sub.vue')['default'];
     BookItem: typeof import('./components/book-item.vue')['default'];
     ChangePage: typeof import('./components/toolbar/changePage.vue')['default'];
+    ElAffix: typeof import('element-plus/es')['ElAffix'];
     ElAvatar: typeof import('element-plus/es')['ElAvatar'];
+    ElBacktop: typeof import('element-plus/es')['ElBacktop'];
     ElButton: typeof import('element-plus/es')['ElButton'];
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox'];
     ElCollapseTransition: typeof import('element-plus/es')['ElCollapseTransition'];

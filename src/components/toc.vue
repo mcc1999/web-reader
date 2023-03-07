@@ -3,12 +3,11 @@
     <div>
       <el-scrollbar height="100vh" ref="scrollRef">
         <div class="toc-search">
-          <el-input
-            v-model="search"
-            placeholder="Search"
-            :suffix-icon="Search"
-            @input="handleFilterToc"
-          />
+            <el-input
+              v-model="search"
+              placeholder="Search"
+              :suffix-icon="Search"
+            />
         </div>
         <el-divider />
         <el-tree 
@@ -123,6 +122,9 @@ watch(booksInfo, () => {
   setCurrentTocKey()
 }, {deep: true})
 
+watch(search, (val) => {
+  treeRef.value!.filter(val)
+})
 </script>
 
 <style lang='scss'>
