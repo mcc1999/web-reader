@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
     ElDivider: typeof import('element-plus/es')['ElDivider'];
     ElEmpty: typeof import('element-plus/es')['ElEmpty'];
     ElIcon: typeof import('element-plus/es')['ElIcon'];
+    ElInput: typeof import('element-plus/es')['ElInput'];
     ElOption: typeof import('element-plus/es')['ElOption'];
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar'];
     ElSelect: typeof import('element-plus/es')['ElSelect'];
