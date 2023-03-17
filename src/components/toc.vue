@@ -10,7 +10,7 @@
             />
         </div>
         <el-divider />
-        <el-tree 
+        <el-tree
           class="toc-tree"
           ref="treeRef"
           node-key="href"
@@ -39,9 +39,9 @@ const { visible } = defineProps({
   visible: {
     type: Boolean,
     require: true,
-  }
-}) 
-const {query: {uuid}} = useRoute()
+  },
+})
+const { query: { uuid } } = useRoute()
 const epubStore = useEpubStore()
 const bookStore = useBookStore()
 const { currentBook: book, rendition } = storeToRefs(epubStore)
@@ -61,11 +61,11 @@ const handleNodeClick = async (data: NavItem) => {
   await rendition.value.display(data.href)
   bookStore.setBookLocation(uuid as string, data.href!)
 }
- 
+
 // 搜索章节名
 const tocFilter = (value: any, data: any) => {
   if (!value) return true;
-    return data.label.indexOf(search.value) !== -1;
+  return data.label.indexOf(search.value) !== -1;
 }
 
 const handleFilterToc = () => {
@@ -73,15 +73,14 @@ const handleFilterToc = () => {
 }
 
 const getCurrentTocKey = () => {
-  if(treeRef.value){
+  if (treeRef.value) {
     console.log('getCurrentTocKey', treeRef.value.getCurrentKey());
-    
   }
 }
 
 const setCurrentTocKey = () => {
   const curTocKey = bookStore.getBookLocation(uuid as string)
-  if(treeRef.value.getCurrentKey() !== curTocKey){
+  if (treeRef.value.getCurrentKey() !== curTocKey) {
     treeRef.value.setCurrentKey(curTocKey)
   }
 }
@@ -89,15 +88,16 @@ const setCurrentTocKey = () => {
 // 获取key在树型结构里的位置Index，以计算它在章节目录里距离Top的值
 // 相当于深度优先遍历，第几个遍历到key这个值
 const getCurTocKeyIndex = (tree: NavItem[], key: string) => {
-  let index = 0, found = false
+  let index = 0; let
+    found = false
   const dfs = (nodeTree: NavItem[], key: string) => {
-    for(let i = 0; i < nodeTree.length; i++ ) {
+    for (let i = 0; i < nodeTree.length; i++) {
       !found && index++
-      if(nodeTree[i].href === key) {
+      if (nodeTree[i].href === key) {
         found = true
         return
       }
-      if(nodeTree[i].subitems?.length && !found){
+      if (nodeTree[i].subitems?.length && !found) {
         dfs(nodeTree[i].subitems!, key)
       }
     }
@@ -106,21 +106,21 @@ const getCurTocKeyIndex = (tree: NavItem[], key: string) => {
   return index
 }
 
-watch(book, async () => {  
-  if(book){
-    const navigation = await book.value.loaded.navigation  
+watch(book, async () => {
+  if (book) {
+    const navigation = await book.value.loaded.navigation
     tocData.value = navigation.toc
     await nextTick(setCurrentTocKey)
     const curTocKey = bookStore.getBookLocation(uuid as string)
     const curTocKeyIndex = getCurTocKeyIndex(navigation.toc, curTocKey!)
-    
-    scrollRef.value.scrollTo({top: 43 * (curTocKeyIndex - 1) + 81})
+
+    scrollRef.value.scrollTo({ top: 43 * (curTocKeyIndex - 1) + 81 })
   }
 })
 
 watch(booksInfo, () => {
   setCurrentTocKey()
-}, {deep: true})
+}, { deep: true })
 
 watch(search, (val) => {
   treeRef.value!.filter(val)
@@ -148,7 +148,7 @@ watch(search, (val) => {
   border-right: 2px solid var(--el-border-color);
   transition: all 0.5s;
   // padding-top: 75px;
-  
+
   .toc-search {
     margin: 0 auto;
     margin-top: 75px;
