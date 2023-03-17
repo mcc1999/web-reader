@@ -14,7 +14,11 @@
           </div>
         </div>
       </div>
-      <el-empty v-if="!loading && !bookArrayBuffer" description="This Book Does Not Exist!" class="reader-empty" />
+      <el-empty
+        v-if="!loading && !bookArrayBuffer"
+        description="This Book Does Not Exist!"
+        class="reader-empty"
+      />
     </div>
   </div>
 </template>
@@ -26,7 +30,7 @@ import { useRoute } from 'vue-router';
 import Epub, { Book } from 'epubjs'
 import { storeToRefs } from 'pinia';
 
-const {query: {uuid}} = useRoute()
+const { query: { uuid } } = useRoute()
 const bookStore = useBookStore()
 const epubStore = useEpubStore()
 
@@ -38,35 +42,34 @@ const fullScreenRef = ref<HTMLDivElement>()
 // 目录显示/隐藏
 const tocVisible = ref<boolean>(false)
 const bookArrayBuffer = ref<ArrayBuffer>()
-const {currentBook, rendition} = storeToRefs(epubStore)
+const { currentBook, rendition } = storeToRefs(epubStore)
 
-onBeforeMount(async() => {
+onBeforeMount(async () => {
   await bookStore.getLocalBookList() // 在reader路由也要拿一下所有booksInfo，不然拿不到location
   bookArrayBuffer.value = await bookStore.getLocalBookArrayBuffer(uuid as string)
 })
 
 watch(bookArrayBuffer, async () => {
-  if(bookArrayBuffer.value){  
-    loading.value = false  
+  if (bookArrayBuffer.value) {
+    loading.value = false
     // @ts-ignore
     const book: Book = new Epub(bookArrayBuffer.value)
-    const rendition = book.renderTo("book-reader", {
-      manager: "default",
-      flow: "scrolled-doc",
+    const r = book.renderTo('book-reader', {
+      manager: 'default',
+      flow: 'scrolled-doc',
       spread: 'none',
-      width: "100%",
+      width: '100%',
       allowScriptedContent: true,
     });
     const oldLocation = bookStore.getBookLocation(uuid as string)
-    await rendition.display(oldLocation)
+    await r.display(oldLocation)
 
     book.ready.then(() => {
       epubStore.setEpubBook(book)
-      epubStore.setRendition(rendition)
+      epubStore.setRendition(r)
     })
   }
 })
-
 
 // 目录处理事件
 const toggleTocVisible = () => {
@@ -74,25 +77,25 @@ const toggleTocVisible = () => {
 }
 
 const handlePreviewsPage = () => {
-  if(currentBook.value){
+  if (currentBook.value) {
     rendition.value.prev().then(() => {
       // 页面回到最上面
-      if(scrollRef.value){
+      if (scrollRef.value) {
         scrollRef.value.scrollTop = 0
       }
-    
+
       // 获取当前页面location，更新toc组件
       // @ts-ignore
-      const curToc = epubStore.rendition.currentLocation().start.href      
+      const curToc = epubStore.rendition.currentLocation().start.href
       bookStore.setBookLocation(uuid as string, curToc)
     });
   }
 }
 const handleNextPage = () => {
-  if(currentBook.value){    
+  if (currentBook.value) {
     rendition.value.next().then(() => {
       // 页面回到最上面
-      if(scrollRef.value){
+      if (scrollRef.value) {
         scrollRef.value.scrollTop = 0
       }
 
@@ -104,23 +107,23 @@ const handleNextPage = () => {
   }
 }
 // 按键翻页
-const keyListener = function(e: KeyboardEvent){  
+const keyListener = (e: KeyboardEvent) => {
   // Left Key
-  if ((e.keyCode || e.which) == 37) {
+  if ((e.keyCode || e.which) === 37) {
     handlePreviewsPage()
   }
   // Right Key
-  if ((e.keyCode || e.which) == 39) {
+  if ((e.keyCode || e.which) === 39) {
     handleNextPage()
   }
 };
 
 onMounted(() => {
-  rendition.value?.on("keyup", keyListener);
-  document.addEventListener("keyup", keyListener, false);
+  rendition.value?.on('keyup', keyListener);
+  document.addEventListener('keyup', keyListener, false);
 })
 
-onBeforeUnmount(async () => {  
+onBeforeUnmount(async () => {
   // @ts-ignore
   await bookStore.setBookLocation(uuid, epubStore.rendition.currentLocation().start.href)
 })
@@ -137,26 +140,25 @@ onBeforeUnmount(async () => {
     height: 100vh;
     overflow: auto;
 
-  
     .book-page {
       width: 1000px;
       margin: 30px auto;
       box-shadow: var(--el-box-shadow-book);
-      
+
       .book-reader-container {
         padding: 96px 48px 200px;
         box-sizing: border-box;
-        
+
         .reader-content {
           min-height: 100vh;
         }
-  
+
         .next-btn {
           display: flex;
           justify-content: space-between;
           margin-top: 24px;
           border-top: 1px solid var(--el-color-primary);
-  
+
           p {
             width: 330px;
             height: 60px;
@@ -171,7 +173,7 @@ onBeforeUnmount(async () => {
           }
         }
       }
-  
+
     }
   }
   .reader-empty {

@@ -35,12 +35,13 @@ import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { Search } from '@element-plus/icons-vue'
 
-const { visible } = defineProps({
+const props = defineProps({
   visible: {
     type: Boolean,
     require: true,
   },
 })
+const { visible } = toRefs(props)
 const { query: { uuid } } = useRoute()
 const epubStore = useEpubStore()
 const bookStore = useBookStore()
@@ -57,7 +58,6 @@ const defaultProps = {
 }
 
 const handleNodeClick = async (data: NavItem) => {
-  console.log('handleNodeClick', data)
   await rendition.value.display(data.href)
   bookStore.setBookLocation(uuid as string, data.href!)
 }
@@ -66,16 +66,6 @@ const handleNodeClick = async (data: NavItem) => {
 const tocFilter = (value: any, data: any) => {
   if (!value) return true;
   return data.label.indexOf(search.value) !== -1;
-}
-
-const handleFilterToc = () => {
-  treeRef.value?.filter()
-}
-
-const getCurrentTocKey = () => {
-  if (treeRef.value) {
-    console.log('getCurrentTocKey', treeRef.value.getCurrentKey());
-  }
 }
 
 const setCurrentTocKey = () => {
@@ -90,15 +80,17 @@ const setCurrentTocKey = () => {
 const getCurTocKeyIndex = (tree: NavItem[], key: string) => {
   let index = 0; let
     found = false
-  const dfs = (nodeTree: NavItem[], key: string) => {
+  const dfs = (nodeTree: NavItem[], k: string) => {
     for (let i = 0; i < nodeTree.length; i++) {
-      !found && index++
-      if (nodeTree[i].href === key) {
+      if (!found) {
+        index++
+      }
+      if (nodeTree[i].href === k) {
         found = true
         return
       }
       if (nodeTree[i].subitems?.length && !found) {
-        dfs(nodeTree[i].subitems!, key)
+        dfs(nodeTree[i].subitems!, k)
       }
     }
   }

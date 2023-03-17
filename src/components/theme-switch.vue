@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { Sunny, Moon } from '@element-plus/icons-vue'
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useDark, useToggle } from '@vueuse/core'
 import { ref, watch } from 'vue'
 

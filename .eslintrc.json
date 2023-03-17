@@ -5,9 +5,10 @@
     "vue/setup-compiler-macros": true
   },
   "extends": [
-    "plugin:vue/essential",
     "airbnb-base",
+    "eslint:recommended",
     "plugin:import/recommended",
+    "plugin:vue/vue3-essential",
     "./.eslintrc-auto-import.json"
   ],
   "parserOptions": {
@@ -28,6 +29,8 @@
     "import/no-unresolved": "off",
     "import/extensions": "off",
     "import/order": "off",
-    "semi": "off"
+    "semi": "off",
+    "vue/multi-word-component-names": "off",
+    "no-plusplus": "off"
   }
 }

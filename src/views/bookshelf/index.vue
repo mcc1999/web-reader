@@ -28,8 +28,7 @@
 import UploadBook from '@/components/upload-book.vue';
 import UniqueBookName from '@/components/unique-book-name.vue';
 import BookItem from '@/components/book-item.vue';
-import Test from '@/components/test.vue';
-import { useBookStore, useTestStore } from '@/store';
+import { useBookStore } from '@/store';
 import { onBeforeMount } from 'vue';
 import { storeToRefs } from 'pinia'
 
@@ -44,7 +43,7 @@ onBeforeMount(async () => {
 <style scoped lang="scss">
 .bookshelf{
   margin: 0 10%;
-  
+
   .shelf-header {
     display: flex;
     justify-content: space-between;

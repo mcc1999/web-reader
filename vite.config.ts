@@ -27,9 +27,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(
-      { reactivityTransform: true }, // 开启props解构响应性语法糖
-    ),
+    vue(),
     AutoImport({
       // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
       imports: ['vue'],

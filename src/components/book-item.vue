@@ -27,14 +27,14 @@ const handleDeleteBook = async (evt: MouseEvent) => {
 }
 
 const handleToReader = () => {
-  router.push({path: '/reader', query: {uuid: props.book.uuid}})
+  router.push({ path: '/reader', query: { uuid: props.book.uuid } })
 }
 </script>
 
 <style scoped lang='scss'>
 .book-item-wrapper{
   height: 296px;
-  
+
   .book-item{
     width: 140px;
     height: 196px;
@@ -48,7 +48,6 @@ const handleToReader = () => {
       display: block;
     }
 
-    
     img {
       width: 100%;
       height: 100%
@@ -64,11 +63,11 @@ const handleToReader = () => {
       font-size: 16px;
       border-radius: 50%;
       border: 3px solid var(--el-border-color);
-      cursor: pointer;  
+      cursor: pointer;
     }
   }
   .book-name {
-    width: 140px;      
+    width: 140px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;

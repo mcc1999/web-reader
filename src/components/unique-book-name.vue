@@ -1,7 +1,7 @@
 <template>
   <div class="unique-book-name">
     <el-tooltip placement="top" content="是否允许存在同名的图书">
-      图书名唯一：        
+      图书名唯一：
     </el-tooltip>
     <el-switch v-model="uniqueBookName" inline-prompt active-text="on" inactive-text="off" />
   </div>
@@ -12,7 +12,7 @@ import { useBookStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
 const bookStore = useBookStore()
-const {uniqueBookNameFlag: uniqueBookName} = storeToRefs(bookStore)
+const { uniqueBookNameFlag: uniqueBookName } = storeToRefs(bookStore)
 
 </script>
 

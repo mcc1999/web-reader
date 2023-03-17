@@ -38,7 +38,7 @@
           <el-tooltip placement="bottom" content="目录">
             <i-ant-design-menu-outlined />
           </el-tooltip>
-        </div> 
+        </div>
       </div>
 
       <div class="toolbar-right">
@@ -46,23 +46,51 @@
         <!-- 改变阅读器背景色 -->
         <div class="toolbar-item">
           <div class="toolbar-item-title">背景色</div>
-          <el-color-picker v-model="readerConfig.backgroundColor" size="small" @change="updateBookStyle" class="color-pick-class" :predefine="predefineColors" />
+          <el-color-picker
+            v-model="readerConfig.backgroundColor"
+            size="small" @change="updateBookStyle"
+            class="color-pick-class"
+            :predefine="predefineColors"
+          />
         </div>
         <el-divider direction="vertical" />
         <!-- 改变阅读器字号 -->
         <div class="toolbar-item">
           <div class="toolbar-item-title">字号</div>
-          <AddSub v-model="readerConfig.fontSize" :width='80' :options="fontSizes" unit="px" @update:modelValue="updateBookStyle"/>
-          <!-- <el-select v-model="readerConfig.fontSize" size="small" @change="updateBookStyle" class="select-class">
-            <el-option v-for="fontSize in fontSizes" :key="fontSize" :label="fontSize + 'px'" :value="readerConfig.fontSize" />
+          <AddSub
+            v-model="readerConfig.fontSize"
+            :width='80'
+            :options="fontSizes"
+            unit="px"
+            @update:modelValue="updateBookStyle"
+          />
+          <!-- <el-select
+            v-model="readerConfig.fontSize"
+            size="small"
+            @change="updateBookStyle"
+            class="select-class"
+          >
+            <el-option
+              v-for="fontSize in fontSizes"
+              :key="fontSize"
+              :label="fontSize + 'px'"
+              :value="readerConfig.fontSize"
+            />
           </el-select> -->
         </div>
         <el-divider direction="vertical" />
         <!-- 改变阅读器字体 -->
         <div class="toolbar-item">
           <div class="toolbar-item-title">字体</div>
-          <el-select v-model="readerConfig.fontFamily" size="small" @change="updateBookStyle" class="select-class">
-            <el-option v-for="fontFamily in fontFamilies" :key="fontFamily.value" :label="fontFamily.label" :value="fontFamily.value" />
+          <el-select
+            v-model="readerConfig.fontFamily"
+            size="small" @change="updateBookStyle"
+            class="select-class">
+            <el-option v-for="fontFamily in fontFamilies"
+              :key="fontFamily.value"
+              :label="fontFamily.label"
+              :value="fontFamily.value"
+            />
           </el-select>
         </div>
         <el-divider direction="vertical" />
@@ -75,7 +103,13 @@
         <!-- 改变阅读器行间距 -->
         <div class="toolbar-item">
           <div class="toolbar-item-title">行间距</div>
-          <AddSub v-model="readerConfig.lineHeight" :width='80' :options="lineHeights" unit="x" @update:modelValue="updateBookStyle"/>
+          <AddSub
+            v-model="readerConfig.lineHeight"
+            :width='80'
+            :options="lineHeights"
+            unit="x"
+            @update:modelValue="updateBookStyle"
+          />
         </div>
         <el-divider direction="vertical" />
         <ThemeSwitch />
@@ -85,26 +119,29 @@
 </template>
 
 <script lang="ts" setup>
-import Toc from '@/components/toc.vue'
 import AddSub from '@/components/add-sub.vue'
 import ThemeSwitch from '@/components/theme-switch.vue'
 import { useEpubStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { fontSizes, fontFamilies, predefineColors, lineHeights } from '@/consts/reader-config';
+import {
+  fontSizes, fontFamilies, predefineColors, lineHeights,
+} from '@/consts/reader-config';
 import screenfull from 'screenfull';
 
-const { parentRef } = defineProps({
+const props = defineProps({
   parentRef: {
     type: HTMLElement,
     // required: true,
-  }
+  },
 })
+const { parentRef } = toRefs(props)
+
 const emit = defineEmits(['toggle-toc-visible'])
 
 const router = useRouter()
 const epubStore = useEpubStore()
-const {rendition} = storeToRefs(epubStore)
+const { rendition } = storeToRefs(epubStore)
 const toolbarFold = ref(false)
 const isFullscreen = ref(false)
 const { readerConfig } = storeToRefs(epubStore)
@@ -112,7 +149,7 @@ const { readerConfig } = storeToRefs(epubStore)
 const toggleToolbarFold = () => {
   toolbarFold.value = !toolbarFold.value
 }
-const updateBookStyle = () => {  
+const updateBookStyle = () => {
   if (rendition.value) {
     rendition.value.themes.override('background-color', readerConfig.value.backgroundColor);
     rendition.value.themes.override('font-size', `${readerConfig.value.fontSize}px`);
@@ -127,17 +164,17 @@ const backToBookShelf = () => {
 
 // 全屏处理事件
 const handleFullscreen = async () => {
-	if (screenfull.isEnabled) {
-		await screenfull.toggle(parentRef);
-	}
+  if (screenfull.isEnabled) {
+    await screenfull.toggle(parentRef?.value);
+  }
 }
-screenfull.on('change', () => {  
+screenfull.on('change', () => {
   isFullscreen.value = screenfull.isFullscreen
 })
 
 // 页面初始化时，从localStorage获取持久化的readerConfig，并执行一次updateBookStyle
 watch(rendition, () => {
-  if(rendition.value) {
+  if (rendition.value) {
     updateBookStyle()
     document.getElementById('book-reader-container')?.setAttribute('style', `background-color:${readerConfig.value.backgroundColor}`)
   }
@@ -169,7 +206,7 @@ watch(() => readerConfig.value.backgroundColor, () => {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0; 
+  right: 0;
   z-index: 100;
 
   .toolbar-left {
@@ -184,7 +221,7 @@ watch(() => readerConfig.value.backgroundColor, () => {
       align-items: center;
       font-size: 24px;
       transform: rotate(90deg);
-      cursor: pointer;  
+      cursor: pointer;
     }
     .title {
       font-size: 20px;
@@ -222,7 +259,7 @@ watch(() => readerConfig.value.backgroundColor, () => {
     .select-class {
       width: 80px;
     }
-    
+
     .slider-class {
       width: 96px;
     }

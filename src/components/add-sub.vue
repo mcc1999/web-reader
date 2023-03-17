@@ -18,93 +18,81 @@ interface Option {
   value: number;
 }
 
-const {modelValue, min, max, step, disabled, width, options, unit} = defineProps({
-  modelValue: {
-    type: Number,
-    required: true,
-  },
-  min: {
-    type: Number,
-    default: 1,
-  },
-  max: {
-    type: Number,
-    default: 10,
-  },
-  step: {
-    type: Number,
-    default: 1,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  width: {
-    type: Number,
-    default: 120,
-  },
-  options: {
-    type: Array,
-    default: null,
-  },
-  unit: {
-    type: String,
-    default: undefined,
-  }
+interface PropsType {
+  modelValue: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  disabled?: boolean;
+  width?: number;
+  options?: any[];
+  unit?: string;
+}
+
+const props = withDefaults(defineProps<PropsType>(), {
+  min: 1,
+  max: 10,
+  step: 1,
+  disabled: false,
+  width: 120,
 });
 
-const emits = defineEmits(['update:modelValue']);
-const disabledFlag = ref({add: false, sub : false})
+const {
+  modelValue, min, max, step, disabled, width, options, unit,
+} = toRefs(props)
 
-const judgeDisable = (val: number) => {  
-  if(options){
-    if(typeof options[0] === 'number'){
-      disabledFlag.value.add = val === options[options.length - 1]
-      disabledFlag.value.sub = val === options[0]
-    }else {
-      disabledFlag.value.add = val === (options[options.length - 1] as Option).value
-      disabledFlag.value.sub = val === (options[0] as Option).value
+const emits = defineEmits(['update:modelValue']);
+const disabledFlag = ref({ add: false, sub: false })
+
+const judgeDisable = (val: number) => {
+  if (options?.value && options.value.length) {
+    if (typeof options.value[0] === 'number') {
+      disabledFlag.value.add = val === options.value[options.value.length - 1]
+      disabledFlag.value.sub = val === options.value[0]
+    } else {
+      disabledFlag.value.add = val === (options.value[options.value.length - 1] as Option).value
+      disabledFlag.value.sub = val === (options.value[0] as Option).value
     }
-  }else {
-    disabledFlag.value.add = val >= max
-    disabledFlag.value.sub = val <= min
+  } else {
+    disabledFlag.value.add = val >= max.value
+    disabledFlag.value.sub = val <= min.value
   }
 }
-onBeforeMount(() => judgeDisable(modelValue))
+onBeforeMount(() => judgeDisable(modelValue.value))
 
-const increment = () => {  
-  if(options) {
-    const index = options.findIndex((option) => option === modelValue)
-    if (index < options.length - 1) {
-      emits('update:modelValue', options[index + 1] as number)
-      judgeDisable(options[index + 1] as number)
+const increment = () => {
+  if (options) {
+    const index = options.value?.findIndex((option) => option === modelValue)
+    if (index && options.value && index < options.value.length - 1) {
+      emits('update:modelValue', options.value[index + 1] as number)
+      judgeDisable(options.value[index + 1] as number)
     }
     return
   }
-  if(modelValue + step <= max) {
-    emits('update:modelValue', modelValue + step);
-    judgeDisable(modelValue + step)
-  }else if(modelValue < max){
+  if (modelValue.value + step.value <= max.value) {
+    emits('update:modelValue', modelValue.value + step.value);
+    judgeDisable(modelValue.value + step.value)
+  } else if (modelValue < max) {
     emits('update:modelValue', max);
-    judgeDisable(max)
+    judgeDisable(max.value)
   }
 };
 
 const decrement = () => {
-  if(options) {
-    const index = options.findIndex((option) => option === modelValue)
+  if (options?.value) {
+    const index = options.value.findIndex((option) => option === modelValue)
     if (index > 0) {
-      emits('update:modelValue', options[index - 1])
-      judgeDisable(options[index - 1] as number)
+      emits('update:modelValue', options.value[index - 1])
+      judgeDisable(options.value[index - 1] as number)
     }
     return
   }
-  if(modelValue - step >= min) {   
-    emits('update:modelValue', modelValue - step);
-    judgeDisable(modelValue - step)
-  }else if(min < modelValue){
+  if (modelValue.value - step.value >= min.value) {
+    emits('update:modelValue', modelValue.value - step.value);
+    judgeDisable(modelValue.value - step.value)
+  } else if (min < modelValue) {
     emits('update:modelValue', min);
-    judgeDisable(max)
+    judgeDisable(max.value)
   }
 };
 

@@ -3,9 +3,9 @@
     accept=".epub"
     :auto-upload="false"
     :on-change="handleChange"
-    :show-file-list	="false"
+    :show-file-list="false"
   >
-    <template #trigger>      
+    <template #trigger>
       <el-button color="#ff6525" class="upload-button" round>
         <i-ep-document-add :size="18" class="add-icon" />
         添加本地图书
@@ -16,7 +16,7 @@
 
 <script setup lang='ts'>
 import { useBookStore } from '@/store';
-import { ElMessage, UploadFile } from 'element-plus';
+import { UploadFile } from 'element-plus';
 
 const bookStore = useBookStore()
 const handleChange = async (uploadFile: UploadFile) => {
