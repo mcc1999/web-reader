@@ -2,6 +2,8 @@
 
 > 模仿 Neat Reader Web 阅读器实现的 epub 阅读器，将来可能支持 txt 等更多格式
 
+> [在线试用](https://web-reader-delta.vercel.app/#/bookshelf)
+
 - 技术栈：Vue3 + Vite + Typescript + Less + Pinia
 - epubjs
 -
